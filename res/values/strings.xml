@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">短信转发</string>
+    <string name="btn_stop">停止后台服务</string>
+    <string name="btn_start">开始后台服务</string>
+    <string name="et_receive_hint">号码过滤,多个号码分号隔开</string>
+    <string name="et_rex_hint">关键字分号隔开添加多个(关键字间为"或"关系)</string>
+    <string name="et_target_hint">要转发的目标号码</string>
+    <string name="_info">下面是开启服务接收到的短信,点击查看,长按可删除</string>
+    <string name="from_no_filter">号码不过滤</string>
+    <string name="rex_no_filter">内容不过滤</string>
+    <string name="mode_receiver">MODE_RECEIVER</string>
+    <string name="mode_service">MODE_SERVICE</string>
+
+</resources>
