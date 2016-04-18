@@ -36,7 +36,8 @@ public class SuccessTickView extends View {
         init();
     }
 
-    private void init () {
+    @SuppressWarnings("deprecation")
+	private void init () {
         mPaint = new Paint();
         mPaint.setColor(getResources().getColor(R.color.success_stroke_color));
         mLeftRectWidth = CONST_LEFT_RECT_W;

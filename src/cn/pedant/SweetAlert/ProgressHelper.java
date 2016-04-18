@@ -17,7 +17,8 @@ public class ProgressHelper {
     private float mProgressVal;
     private int mCircleRadius;
 
-    public ProgressHelper(Context ctx) {
+    @SuppressWarnings("deprecation")
+	public ProgressHelper(Context ctx) {
         mToSpin = true;
         mSpinSpeed = 0.75f;
         mBarWidth = ctx.getResources().getDimensionPixelSize(R.dimen.common_circle_width) + 1;

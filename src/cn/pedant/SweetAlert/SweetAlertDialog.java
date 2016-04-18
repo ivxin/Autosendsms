@@ -258,7 +258,8 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public SweetAlertDialog setCustomImage (int resourceId) {
+    @SuppressWarnings("deprecation")
+	public SweetAlertDialog setCustomImage (int resourceId) {
         return setCustomImage(getContext().getResources().getDrawable(resourceId));
     }
 

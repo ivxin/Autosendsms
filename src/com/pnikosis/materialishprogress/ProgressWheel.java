@@ -29,7 +29,7 @@ import android.view.View;
  *         http://www.apache.org/licenses/LICENSE-2.0
  */
 public class ProgressWheel extends View {
-	private static final String TAG = ProgressWheel.class.getSimpleName();
+	public static final String TAG = ProgressWheel.class.getSimpleName();
 	private final int barLength = 16;
 	private final int barMaxLength = 270;
 	private final long pauseGrowingTime = 200;
@@ -93,6 +93,7 @@ public class ProgressWheel extends View {
 		setAnimationEnabled();
 	}
 
+	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void setAnimationEnabled() {
 		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
