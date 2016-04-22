@@ -29,32 +29,39 @@
             android:inputType="number|phone" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_btns"
+    <RelativeLayout
+        android:id="@+id/rl_records"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll_rexs"
-        android:orientation="horizontal" >
+        android:layout_below="@id/ll_rexs" >
 
-        <Button
-            android:id="@+id/btn_stop"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_btns"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_stop" />
+            android:layout_below="@id/ll_rexs"
+            android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/btn_start"
-            android:layout_width="0dp"
+            <Button
+                android:id="@+id/btn_stop"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/btn_stop" />
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/btn_start" />
+        </LinearLayout>
+
+        <com.mysoft.view.MyViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_start" />
-    </LinearLayout>
-
-    <com.mysoft.view.MyViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ll_btns" />
+            android:paddingTop="50dp" />
+    </RelativeLayout>
 
 </RelativeLayout>

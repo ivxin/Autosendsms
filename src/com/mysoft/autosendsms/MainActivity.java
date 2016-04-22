@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity implements OnClickListener, OnFocusChangeListener, OnPageChangeListener {
@@ -39,7 +39,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private MyViewPager viewPager;
 	private SMSRecordFragment fgAll;
 	private SMSRecordFragment fgTransed;
-	private LinearLayout ll_btns;
+//	private LinearLayout ll_btns;
+	private RelativeLayout rl_records;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +100,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		et_target = (EditText) findViewById(R.id.et_target_num);
 		et_rex = (EditText) findViewById(R.id.et_rexstring);
 
-		ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
+		rl_records=(RelativeLayout)findViewById(R.id.rl_records);
+//		ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = findViewById(R.id.btn_stop);
 		btn_start = findViewById(R.id.btn_start);
 
@@ -281,22 +283,22 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			if (offset != 0) {
 				fgAll.setSlidingAlpha(1 - offset);
 				fgTransed.setSlidingAlpha(offset);
-				ll_btns.setAlpha((float) (2 * Math.abs(offset - 0.5)));
+				rl_records.setAlpha((float) (2 * Math.abs(offset - 0.5)));
 				if (offset > 0.5) {
-					ll_btns.setBackgroundColor(fgTransed.getColor());
+					rl_records.setBackgroundColor(fgTransed.getColor());
 				} else if (offset < 0.5) {
-					ll_btns.setBackgroundColor(fgAll.getColor());
+					rl_records.setBackgroundColor(fgAll.getColor());
 				} else {
-					ll_btns.setBackgroundColor(Color.TRANSPARENT);
+					rl_records.setBackgroundColor(Color.TRANSPARENT);
 				}
 			}
 			// 滑动结束
 			if (position == 1 && offset == 0) {// 结束停在1
 				fgTransed.setSlidingAlpha(1);
-				ll_btns.setBackgroundColor(fgTransed.getColor());
+				rl_records.setBackgroundColor(fgTransed.getColor());
 			} else if (position == 0 && offset == 0) {// 结束停在0
 				fgAll.setSlidingAlpha(1);
-				ll_btns.setBackgroundColor(fgAll.getColor());
+				rl_records.setBackgroundColor(fgAll.getColor());
 			}
 		}
 
@@ -314,10 +316,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	public void onPageSelected(int position) {
 		switch (position) {
 		case 0:
-			ll_btns.setBackgroundColor(fgTransed.getColor());
+			rl_records.setBackgroundColor(fgAll.getColor());
 			break;
 		case 1:
-			ll_btns.setBackgroundColor(fgAll.getColor());
+			rl_records.setBackgroundColor(fgTransed.getColor());
 			break;
 		default:
 			break;
