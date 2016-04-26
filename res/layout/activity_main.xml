@@ -35,33 +35,56 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_rexs" >
 
+        <com.mysoft.view.MyViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp" />
+
         <LinearLayout
             android:id="@+id/ll_btns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_rexs"
+            android:layout_alignParentTop="true"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btn_stop"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/blue_button_background"
                 android:text="@string/btn_stop" />
 
             <Button
                 android:id="@+id/btn_start"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/blue_button_background"
+                android:enabled="false"
                 android:text="@string/btn_start" />
         </LinearLayout>
-
-        <com.mysoft.view.MyViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="50dp" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/view_up"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:alpha="0.8"
+        android:background="@drawable/navigation_up_button_32px"
+        android:visibility="visible" />
 
 </RelativeLayout>
