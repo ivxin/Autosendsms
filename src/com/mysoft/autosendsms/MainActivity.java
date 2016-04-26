@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private EditText et_target;
 	private View btn_stop;
 	private View btn_start;
+	private RelativeLayout rl_records;
 	private SharedPreferences sp;
 
 	private long lastPressed = 0;
@@ -39,8 +40,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private MyViewPager viewPager;
 	private SMSRecordFragment fgAll;
 	private SMSRecordFragment fgTransed;
-//	private LinearLayout ll_btns;
-	private RelativeLayout rl_records;
+	// private LinearLayout ll_btns;
+	private int page = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +101,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		et_target = (EditText) findViewById(R.id.et_target_num);
 		et_rex = (EditText) findViewById(R.id.et_rexstring);
 
-		rl_records=(RelativeLayout)findViewById(R.id.rl_records);
-//		ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
+		rl_records = (RelativeLayout) findViewById(R.id.rl_records);
+		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = findViewById(R.id.btn_stop);
 		btn_start = findViewById(R.id.btn_start);
 
 		viewPager = (MyViewPager) findViewById(R.id.viewPager);
+		findViewById(R.id.view_up).setOnClickListener(this);
 	}
 
 	public void saveDataToSP() {
@@ -175,6 +177,18 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 				saveDataToSP();
 				stopedUI();
 				shortToast("停止成功,不再转发短信");
+			}
+			break;
+		case R.id.view_up:
+			switch (page) {
+			case 0:
+				fgAll.setTop();
+				break;
+			case 1:
+				fgTransed.setTop();
+				break;
+			default:
+				break;
 			}
 			break;
 		default:
@@ -314,6 +328,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 	@Override
 	public void onPageSelected(int position) {
+		page = position;
 		switch (position) {
 		case 0:
 			rl_records.setBackgroundColor(fgAll.getColor());
@@ -324,5 +339,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		default:
 			break;
 		}
+	}
+
+	public void setUpVis(boolean vis) {
+		findViewById(R.id.view_up).setVisibility(vis ? View.VISIBLE : View.GONE);
 	}
 }

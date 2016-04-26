@@ -42,31 +42,30 @@ android.support.annotation.XmlRes
 cn.pedant.SweetAlert.OptAnimationLoader:
     14:14:public OptAnimationLoader()
 cn.pedant.SweetAlert.ProgressHelper:
-    32:32:public com.pnikosis.materialishprogress.ProgressWheel getProgressWheel()
-    76:79:public void resetCount()
-    82:82:public boolean isSpinning()
-    86:88:public void spin()
-    91:93:public void stopSpinning()
-    96:96:public float getProgress()
-    100:103:public void setProgress(float)
-    106:109:public void setInstantProgress(float)
-    112:112:public int getCircleRadius()
-    119:121:public void setCircleRadius(int)
-    124:124:public int getBarWidth()
-    128:130:public void setBarWidth(int)
-    133:133:public int getBarColor()
-    137:139:public void setBarColor(int)
-    142:142:public int getRimWidth()
-    146:148:public void setRimWidth(int)
-    151:151:public int getRimColor()
-    155:157:public void setRimColor(int)
-    160:160:public float getSpinSpeed()
-    164:166:public void setSpinSpeed(float)
-cn.pedant.SweetAlert.R:
-    9:9:public R()
-cn.pedant.SweetAlert.sample.SampleActivity
+    34:34:public com.pnikosis.materialishprogress.ProgressWheel getProgressWheel()
+    78:81:public void resetCount()
+    84:84:public boolean isSpinning()
+    88:90:public void spin()
+    93:95:public void stopSpinning()
+    98:98:public float getProgress()
+    102:105:public void setProgress(float)
+    108:111:public void setInstantProgress(float)
+    114:114:public int getCircleRadius()
+    121:123:public void setCircleRadius(int)
+    126:126:public int getBarWidth()
+    130:132:public void setBarWidth(int)
+    135:135:public int getBarColor()
+    139:141:public void setBarColor(int)
+    144:144:public int getRimWidth()
+    148:150:public void setRimWidth(int)
+    153:153:public int getRimColor()
+    157:159:public void setRimColor(int)
+    162:162:public float getSpinSpeed()
+    166:168:public void setSpinSpeed(float)
 com.mysoft.adapter.MyPagerAdapter:
     15:16:public MyPagerAdapter(android.support.v4.app.FragmentManager)
+com.mysoft.adapter.SMSAdapter
+com.mysoft.adapter.SMSAdapter$ViewHolder
 com.mysoft.autosendsms.BaseActivity:
     14:15:public void shortToast(int)
     22:23:protected void longToast(int)
@@ -78,9 +77,3 @@ com.mysoft.utils.SMSSendingHandler:
     private static final int FINISHED
 com.mysoft.utils.StringUtils:
     9:9:public StringUtils()
-    27:36:public static java.lang.String encryptBASE64(java.lang.String)
-    48:59:public static java.lang.String decryptBASE64(java.lang.String)
-com.pnikosis.materialishprogress.ProgressWheel:
-    258:263:public void setCallback(com.pnikosis.materialishprogress.ProgressWheel$ProgressCallback)
-    397:400:public void resetCount()
-    568:572:public void setLinearProgress(boolean)
