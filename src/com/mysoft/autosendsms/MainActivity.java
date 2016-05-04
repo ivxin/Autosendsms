@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 @SuppressLint("NewApi")
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private SMSRecordFragment fgTransed;
 	// private LinearLayout ll_btns;
 	private int page = 0;
+	private LinearLayout ll_rexs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	 * 初始化控件
 	 */
 	private void initView() {
+		ll_rexs = (LinearLayout) findViewById(R.id.ll_rexs);
 		et_receive_from = (EditText) findViewById(R.id.et_received_from);
 		et_target = (EditText) findViewById(R.id.et_target_num);
 		et_rex = (EditText) findViewById(R.id.et_rexstring);
@@ -135,6 +138,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setEnabled(true);
 		btn_stop.setEnabled(false);
+		
+		ll_rexs.setVisibility(View.VISIBLE);
 	}
 
 	private void startedUI() {
@@ -155,6 +160,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setEnabled(false);
 		btn_stop.setEnabled(true);
+		
+		ll_rexs.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -332,9 +339,11 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		switch (position) {
 		case 0:
 			rl_records.setBackgroundColor(fgAll.getColor());
+			fgAll.startAnime();
 			break;
 		case 1:
 			rl_records.setBackgroundColor(fgTransed.getColor());
+			fgTransed.startAnime();
 			break;
 		default:
 			break;

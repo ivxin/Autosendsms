@@ -2,17 +2,16 @@ package com.mysoft.entity;
 
 import java.io.Serializable;
 
-public class SMS implements Serializable{
+public class SMS implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5138191257837905373L;
-	private String id,address,content,target;
+	private String id, address, content, target;
 	private long date_time;
 	private boolean isSended;
-	
-	
+
 	public String getTarget() {
 		return target;
 	}

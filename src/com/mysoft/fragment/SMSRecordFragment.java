@@ -22,6 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -37,6 +40,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 	private MainActivity context;
 	private ListView lv_sms_records;
+	private TextView tv_fg_name;
 	private List<SMS> list;
 	private SMSAdapter adapter;
 	private int flag;
@@ -63,11 +67,16 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		dbs = new DBserver(context);
 		view = inflater.inflate(R.layout.fragment_sms_list, null);
 		lv_sms_records = (ListView) view.findViewById(R.id.lv_sms_records);
+		tv_fg_name = (TextView) view.findViewById(R.id.tv_fg_name);
+		
+		tv_fg_name.setText(flag == TRANSED ? "已经转发的短信" : "收到的所有短信");
 		list = new ArrayList<SMS>();
 		adapter = new SMSAdapter(list, context);
 		lv_sms_records.setAdapter(adapter);
 
 		refresh();
+		startAnime();
+		
 		lv_sms_records.setOnItemClickListener(this);
 		lv_sms_records.setOnItemLongClickListener(this);
 		getRandomColor();
@@ -127,6 +136,27 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 					}
 				}).show();
 		return true;
+	}
+	
+	public void startAnime(){
+		AlphaAnimation animation = new AlphaAnimation(1.0f, 0.0f);
+		animation.setDuration(3000L);
+		animation.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				tv_fg_name.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				tv_fg_name.setVisibility(View.GONE);
+			}
+		});
+		tv_fg_name.startAnimation(animation);
 	}
 
 	public void refresh() {
