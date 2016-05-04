@@ -1,4 +1,4 @@
-package com.mysoft.dao;
+package com.mysoft.db;
 
 import java.util.ArrayList;
 import java.util.List;

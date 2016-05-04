@@ -6,7 +6,7 @@ import java.util.Random;
 
 import com.mysoft.autosendsms.MainActivity;
 import com.mysoft.autosendsms.R;
-import com.mysoft.dao.DBserver;
+import com.mysoft.db.DBserver;
 import com.mysoft.entity.SMS;
 import com.mysoft.utils.Constant;
 import com.mysoft.utils.StringUtils;

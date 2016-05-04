@@ -2,7 +2,7 @@ package com.mysoft.utils;
 
 import java.util.ArrayList;
 
-import com.mysoft.dao.DBserver;
+import com.mysoft.db.DBserver;
 import com.mysoft.entity.SMS;
 
 import android.annotation.SuppressLint;
