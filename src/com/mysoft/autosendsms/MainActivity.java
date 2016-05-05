@@ -62,6 +62,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		setContentView(R.layout.activity_main);
 		if (Build.VERSION.SDK_INT >= 23) {
 			requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, REQUEST_CODE_ASK_PERMISSIONS);
+		}else{
+			hasPermission=true;
 		}
 		initView();
 		initDataState();
