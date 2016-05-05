@@ -7,33 +7,42 @@ import com.mysoft.fragment.SMSRecordFragment;
 import com.mysoft.utils.Constant;
 import com.mysoft.view.MyViewPager;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity implements OnClickListener, OnFocusChangeListener, OnPageChangeListener {
 
+	private static final int CONTACTOR = 0;
+	private static final int REQUEST_CODE_ASK_PERMISSIONS = 0;
 	private EditText et_receive_from;
 	private EditText et_rex;
 	private EditText et_target;
 	private View btn_stop;
 	private View btn_start;
 	private RelativeLayout rl_records;
+	private RelativeLayout rl_rexs;
+	// private LinearLayout ll_btns;
 	private SharedPreferences sp;
 
 	private long lastPressed = 0;
@@ -41,15 +50,14 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private MyViewPager viewPager;
 	private SMSRecordFragment fgAll;
 	private SMSRecordFragment fgTransed;
-	// private LinearLayout ll_btns;
 	private int page = 0;
-	private LinearLayout ll_rexs;
+	private boolean hasPermission = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, REQUEST_CODE_ASK_PERMISSIONS);
 		initView();
 		initDataState();
 	}
@@ -93,17 +101,18 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setOnClickListener(this);
 		btn_stop.setOnClickListener(this);
+		et_target.setOnClickListener(this);
 	}
 
 	/**
 	 * 初始化控件
 	 */
 	private void initView() {
-		ll_rexs = (LinearLayout) findViewById(R.id.ll_rexs);
+		rl_rexs = (RelativeLayout) findViewById(R.id.rl_rexs);
 		et_receive_from = (EditText) findViewById(R.id.et_received_from);
 		et_target = (EditText) findViewById(R.id.et_target_num);
 		et_rex = (EditText) findViewById(R.id.et_rexstring);
-
+		
 		rl_records = (RelativeLayout) findViewById(R.id.rl_records);
 		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = findViewById(R.id.btn_stop);
@@ -111,6 +120,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		viewPager = (MyViewPager) findViewById(R.id.viewPager);
 		findViewById(R.id.view_up).setOnClickListener(this);
+		findViewById(R.id.v_contact_chooser).setOnClickListener(this);
 	}
 
 	public void saveDataToSP() {
@@ -138,8 +148,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setEnabled(true);
 		btn_stop.setEnabled(false);
-		
-		ll_rexs.setVisibility(View.VISIBLE);
+
+		rl_rexs.setVisibility(View.VISIBLE);
 	}
 
 	private void startedUI() {
@@ -160,8 +170,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setEnabled(false);
 		btn_stop.setEnabled(true);
-		
-		ll_rexs.setVisibility(View.GONE);
+
+		rl_rexs.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -198,10 +208,60 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 				break;
 			}
 			break;
+		case R.id.v_contact_chooser:
+			startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), CONTACTOR);
+			break;
 		default:
 			break;
 		}
+	}
 
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+		case REQUEST_CODE_ASK_PERMISSIONS:
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				// Permission Granted
+				hasPermission = true;
+			} else {
+				// Permission Denied
+				hasPermission = false;
+				shortToast("READ_CONTACTS Denied");
+			}
+			break;
+		default:
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case CONTACTOR:
+				if (hasPermission) {
+					String username = "";
+					String usernumber = "";
+					ContentResolver reContentResolverol = getContentResolver();
+					Uri contactData = data.getData();
+					@SuppressWarnings("deprecation")
+					Cursor cursor = managedQuery(contactData, null, null, null, null);
+					cursor.moveToFirst();
+					username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+					Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+							ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+					while (phone.moveToNext()) {
+						usernumber = phone
+								.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					}
+					et_target.setText(usernumber + " (" + username + ")");
+				}
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	private String buildTip() {

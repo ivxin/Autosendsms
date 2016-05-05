@@ -33,9 +33,17 @@ public class SMSSendingHandler {
 
 	public void start() {
 		sp = context.getSharedPreferences(Constant.SP_FILE_NAME, Context.MODE_PRIVATE);
-		numRex = sp.getString(Constant.NUM_REX_KEY, "");
-		rex = sp.getString(Constant.REX_KEY, "");
-		target = sp.getString(Constant.TARGET_KEY, "");
+		numRex = sp.getString(Constant.NUM_REX_KEY, "").trim();
+		rex = sp.getString(Constant.REX_KEY, "").trim();
+		target = sp.getString(Constant.TARGET_KEY, "").trim();
+		if(!TextUtils.isEmpty(target)){
+			try {
+				target=target.substring(0, target.indexOf("("));
+				target=target.trim().replaceAll("\\s*", "");
+			} catch (Exception e) {
+				target=sp.getString(Constant.TARGET_KEY, "").trim();
+			}
+		}
 		newSms.setTarget(target);
 		if (sp.getBoolean(Constant.STARTED_KEY, false)) {
 			new MyThread().start();

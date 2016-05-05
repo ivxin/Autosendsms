@@ -5,35 +5,46 @@
     android:layout_height="match_parent"
     tools:context="com.mysoft.autosendsms.MainActivity" >
 
-    <LinearLayout
-        android:id="@+id/ll_rexs"
+    <RelativeLayout
+        android:id="@+id/rl_rexs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" >
 
         <EditText
             android:id="@+id/et_received_from"
             style="@style/input_style"
+            android:layout_alignParentTop="true"
             android:hint="@string/et_receive_hint"
             android:inputType="number|text" />
 
         <EditText
             android:id="@+id/et_rexstring"
             style="@style/input_style"
+            android:layout_below="@id/et_received_from"
             android:hint="@string/et_rex_hint" />
 
         <EditText
             android:id="@+id/et_target_num"
             style="@style/input_style"
+            android:layout_below="@id/et_rexstring"
             android:hint="@string/et_target_hint"
             android:inputType="number|phone" />
-    </LinearLayout>
+
+        <View
+            android:id="@+id/v_contact_chooser"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/blue_btn_bg_color" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_records"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll_rexs" >
+        android:layout_below="@id/rl_rexs" >
 
         <com.mysoft.view.MyViewPager
             android:id="@+id/viewPager"
