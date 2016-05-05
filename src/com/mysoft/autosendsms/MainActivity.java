@@ -20,11 +20,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
@@ -57,7 +60,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, REQUEST_CODE_ASK_PERMISSIONS);
+		if (Build.VERSION.SDK_INT >= 23) {
+			requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, REQUEST_CODE_ASK_PERMISSIONS);
+		}
 		initView();
 		initDataState();
 	}
