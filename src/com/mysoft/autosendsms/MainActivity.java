@@ -3,6 +3,7 @@ package com.mysoft.autosendsms;
 import java.util.ArrayList;
 
 import com.mysoft.adapter.MyPagerAdapter;
+import com.mysoft.animation.CubeTransformer;
 import com.mysoft.fragment.SMSRecordFragment;
 import com.mysoft.utils.Constant;
 import com.mysoft.view.MyViewPager;
@@ -99,7 +100,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager(), list);
 		viewPager.setAdapter(adapter);
-
+		viewPager.setPageTransformer(true, new CubeTransformer());
 		viewPager.setOnPageChangeListener(this);
 
 		et_receive_from.setOnFocusChangeListener(this);
