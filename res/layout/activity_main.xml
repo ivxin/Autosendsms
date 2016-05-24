@@ -32,12 +32,12 @@
 
         <View
             android:id="@+id/v_contact_chooser"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_below="@id/et_rexstring"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@color/blue_btn_bg_color" />
+            android:background="@drawable/contacts_128px" />
     </RelativeLayout>
 
     <RelativeLayout
