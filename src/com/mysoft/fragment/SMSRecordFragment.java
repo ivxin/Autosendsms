@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 	private DBserver dbs;
 	private int color;
 	private View view;
+	private Typeface face;
 
 	public void setParams(MainActivity context, int flag) {
 		this.context = context;
@@ -65,10 +67,11 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		dbs = new DBserver(context);
+		face = StringUtils.getTypeface(context);
 		view = inflater.inflate(R.layout.fragment_sms_list, null);
 		lv_sms_records = (ListView) view.findViewById(R.id.lv_sms_records);
 		tv_fg_name = (TextView) view.findViewById(R.id.tv_fg_name);
-		
+		tv_fg_name.setTypeface(face);
 		tv_fg_name.setText(flag == TRANSED ? "已经转发的短信" : "收到的所有短信");
 		list = new ArrayList<SMS>();
 		adapter = new SMSAdapter(list, context);
@@ -107,6 +110,9 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		TextView tv_sms_sender_detail = (TextView) v.findViewById(R.id.tv_sms_sender_detail);
 		TextView tv_sms_time_detail = (TextView) v.findViewById(R.id.tv_sms_time_detail);
 		TextView tv_sms_content_detail = (TextView) v.findViewById(R.id.tv_sms_content_detail);
+		tv_sms_sender_detail.setTypeface(face);
+		tv_sms_time_detail.setTypeface(face);
+		tv_sms_content_detail.setTypeface(face);
 		if (sms.isSended()) {
 			tv_sms_sender_detail.setText(sms.getAddress() + "-->" + sms.getTarget());
 		} else {
@@ -221,6 +227,9 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 				holder.tv_num_from = (TextView) convertView.findViewById(R.id.tv_num_from);
 				holder.tv_sms_time = (TextView) convertView.findViewById(R.id.tv_sms_time);
 				holder.tv_sms_content = (TextView) convertView.findViewById(R.id.tv_sms_content);
+				holder.tv_num_from.setTypeface(face);
+				holder.tv_sms_time.setTypeface(face);
+				holder.tv_sms_content.setTypeface(face);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();

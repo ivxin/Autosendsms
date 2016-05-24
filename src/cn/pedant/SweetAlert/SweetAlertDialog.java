@@ -4,10 +4,12 @@ package cn.pedant.SweetAlert;
 import java.util.List;
 
 import com.mysoft.autosendsms.R;
+import com.mysoft.utils.StringUtils;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +58,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private OnSweetClickListener mCancelClickListener;
     private OnSweetClickListener mConfirmClickListener;
     private boolean mCloseFromCancel;
+	private Typeface face;
 
     public static final int NORMAL_TYPE = 0;
     public static final int ERROR_TYPE = 1;
@@ -74,6 +77,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
 
     public SweetAlertDialog(Context context, int alertType) {
         super(context, R.style.alert_dialog);
+        face = StringUtils.getTypeface(context);
         setCancelable(true);
         setCanceledOnTouchOutside(false);
         mProgressHelper = new ProgressHelper(context);
@@ -139,7 +143,6 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alert_dialog);
-
         mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
         mTitleTextView = (TextView)findViewById(R.id.title_text);
         mContentTextView = (TextView)findViewById(R.id.content_text);
@@ -163,6 +166,9 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         setCancelText(mCancelText);
         setConfirmText(mConfirmText);
         changeAlertType(mAlertType, true);
+        
+        mTitleTextView.setTypeface(face);
+        mContentTextView.setTypeface(face);
 
     }
 

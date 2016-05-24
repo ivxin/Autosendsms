@@ -27,8 +27,6 @@ import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
@@ -125,6 +123,10 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = findViewById(R.id.btn_stop);
 		btn_start = findViewById(R.id.btn_start);
+		
+		et_receive_from.setTypeface(face);
+		et_target.setTypeface(face);
+		et_rex.setTypeface(face);
 
 		viewPager = (MyViewPager) findViewById(R.id.viewPager);
 		findViewById(R.id.view_up).setOnClickListener(this);

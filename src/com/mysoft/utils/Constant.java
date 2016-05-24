@@ -14,4 +14,5 @@ public class Constant {
 	public static final String ACTION="com.mysoft.autosendsms";
 	
 	public static boolean started = false;
+	
 }

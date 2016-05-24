@@ -4,9 +4,20 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Base64;
 
 public class StringUtils {
+
+	private static Typeface face;
+
+	public static Typeface getTypeface(Context context) {
+		if (face == null)
+			face = Typeface.createFromAsset(context.getAssets(), "fonts/fzltqh.ttf");
+		return face;
+	}
+
 	/**
 	 * 毫秒转时间
 	 * 
@@ -48,7 +59,7 @@ public class StringUtils {
 		if (str == null || str.length() == 0) {
 			return null;
 		}
-		//通过http通讯后的字符中加号会被替换成空格,解码时先替换回来
+		// 通过http通讯后的字符中加号会被替换成空格,解码时先替换回来
 		str = str.replaceAll(" ", "+");
 		try {
 			byte[] encode = str.getBytes("UTF-8");
@@ -59,5 +70,5 @@ public class StringUtils {
 			return str;
 		}
 	}
-	
+
 }

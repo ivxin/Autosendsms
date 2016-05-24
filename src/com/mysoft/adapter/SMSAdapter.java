@@ -9,6 +9,7 @@ import com.mysoft.utils.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,11 @@ public class SMSAdapter extends BaseAdapter {
 	LayoutInflater inflater;
 	Context context;
 	ViewHolder holder;
+	private Typeface face;
 
 	public SMSAdapter(List<SMS> list, Context context) {
 		super();
+		face = StringUtils.getTypeface(context);
 		this.list = list;
 		this.context=context;
 		inflater = LayoutInflater.from(context);
@@ -57,6 +60,9 @@ public class SMSAdapter extends BaseAdapter {
 			holder.tv_num_from = (TextView) convertView.findViewById(R.id.tv_num_from);
 			holder.tv_sms_time = (TextView) convertView.findViewById(R.id.tv_sms_time);
 			holder.tv_sms_content = (TextView) convertView.findViewById(R.id.tv_sms_content);
+			holder.tv_num_from.setTypeface(face);
+			holder.tv_sms_time.setTypeface(face);
+			holder.tv_sms_content.setTypeface(face);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
