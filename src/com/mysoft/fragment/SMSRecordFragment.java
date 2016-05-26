@@ -11,6 +11,8 @@ import com.mysoft.entity.SMS;
 import com.mysoft.utils.Constant;
 import com.mysoft.utils.StringUtils;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -18,6 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +33,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener;
+import tyrantgit.explosionfield.ExplosionField;
 
 @SuppressLint("InflateParams")
 public class SMSRecordFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
@@ -49,6 +55,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 	private int color;
 	private View view;
 	private Typeface face;
+	private ExplosionField mExplosionField;
 
 	public void setParams(MainActivity context, int flag) {
 		this.context = context;
@@ -66,6 +73,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		mExplosionField = ExplosionField.attach2Window(context);
 		dbs = new DBserver(context);
 		face = StringUtils.getTypeface(context);
 		view = inflater.inflate(R.layout.fragment_sms_list, null);
@@ -79,7 +87,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 		refresh();
 		startAnime();
-		
+
 		lv_sms_records.setOnItemClickListener(this);
 		lv_sms_records.setOnItemLongClickListener(this);
 		getRandomColor();
@@ -104,12 +112,13 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_sms_detail, null);
+	public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+		final View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_sms_detail, null);
 		SMS sms = list.get(position);
-		TextView tv_sms_sender_detail = (TextView) v.findViewById(R.id.tv_sms_sender_detail);
-		TextView tv_sms_time_detail = (TextView) v.findViewById(R.id.tv_sms_time_detail);
-		TextView tv_sms_content_detail = (TextView) v.findViewById(R.id.tv_sms_content_detail);
+		final LinearLayout ll_detail = (LinearLayout) v.findViewById(R.id.ll_detail);
+		final TextView tv_sms_sender_detail = (TextView) v.findViewById(R.id.tv_sms_sender_detail);
+		final TextView tv_sms_time_detail = (TextView) v.findViewById(R.id.tv_sms_time_detail);
+		final TextView tv_sms_content_detail = (TextView) v.findViewById(R.id.tv_sms_content_detail);
 		tv_sms_sender_detail.setTypeface(face);
 		tv_sms_time_detail.setTypeface(face);
 		tv_sms_content_detail.setTypeface(face);
@@ -120,31 +129,61 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		}
 		tv_sms_time_detail.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time() + ""));
 		tv_sms_content_detail.setText(sms.getContent());
-		AlertDialog dialog = new Builder(context).create();
+		final AlertDialog dialog = new Builder(context).create();
 		dialog.show();
 		Window window = dialog.getWindow();
 		window.setContentView(v);
 	}
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+	public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
 		new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).setTitleText("删除这条记录?")
 				.setContentText("确认删除?删除后无法恢复!").setConfirmText("确定,删除吧!")
 				.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
 					@Override
 					public void onClick(SweetAlertDialog sDialog) {
-
 						dbs.deleteSMSbyID(list.get(position));
-						refresh();
-						// reuse previous dialog instance
+						sDialog.setCancelable(false);
 						sDialog.setTitleText("已删除!").setContentText("该记录已被删除!").setConfirmText("朕知道了")
-								.setConfirmClickListener(null).changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+								.setConfirmClickListener(new OnSweetClickListener() {
+									@Override
+									public void onClick(SweetAlertDialog sweetAlertDialog) {
+										sweetAlertDialog.dismiss();
+										new Handler().postDelayed(new Runnable() {
+											@Override
+											public void run() {
+												mExplosionField.explode(view, new AnimatorListener() {
+													@Override
+													public void onAnimationStart(Animator animation) {
+
+													}
+
+													@Override
+													public void onAnimationRepeat(Animator animation) {
+													}
+
+													@Override
+													public void onAnimationEnd(Animator animation) {
+														view.setScaleX(1.0f);
+														view.setScaleY(1.0f);
+														view.setAlpha(1.0f);
+														refresh();
+													}
+
+													@Override
+													public void onAnimationCancel(Animator animation) {
+													}
+												});
+											}
+										}, 100);
+									}
+								}).changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
 					}
 				}).show();
 		return true;
 	}
-	
-	public void startAnime(){
+
+	public void startAnime() {
 		AlphaAnimation animation = new AlphaAnimation(1.0f, 0.0f);
 		animation.setDuration(3000L);
 		animation.setAnimationListener(new AnimationListener() {
@@ -152,11 +191,11 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 			public void onAnimationStart(Animation animation) {
 				tv_fg_name.setVisibility(View.VISIBLE);
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				tv_fg_name.setVisibility(View.GONE);
