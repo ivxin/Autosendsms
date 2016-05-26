@@ -164,10 +164,15 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 													@Override
 													public void onAnimationEnd(Animator animation) {
-														view.setScaleX(1.0f);
-														view.setScaleY(1.0f);
-														view.setAlpha(1.0f);
-														refresh();
+														new Handler().postDelayed(new Runnable() {
+															@Override
+															public void run() {
+																view.setScaleX(1.0f);
+																view.setScaleY(1.0f);
+																view.setAlpha(1.0f);
+																refresh();
+															}
+														}, 200);
 													}
 
 													@Override

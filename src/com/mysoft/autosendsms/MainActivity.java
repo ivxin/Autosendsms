@@ -61,8 +61,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		setContentView(R.layout.activity_main);
 		if (Build.VERSION.SDK_INT >= 23) {
 			requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, REQUEST_CODE_ASK_PERMISSIONS);
-		}else{
-			hasPermission=true;
+		} else {
+			hasPermission = true;
 		}
 		initView();
 		initDataState();
@@ -118,12 +118,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		et_receive_from = (EditText) findViewById(R.id.et_received_from);
 		et_target = (EditText) findViewById(R.id.et_target_num);
 		et_rex = (EditText) findViewById(R.id.et_rexstring);
-		
+
 		rl_records = (RelativeLayout) findViewById(R.id.rl_records);
 		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = findViewById(R.id.btn_stop);
 		btn_start = findViewById(R.id.btn_start);
-		
+
 		et_receive_from.setTypeface(face);
 		et_target.setTypeface(face);
 		et_rex.setTypeface(face);
@@ -151,8 +151,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 	private void stopedUI() {
 		et_receive_from.setEnabled(true);
-		et_target.setEnabled(true);
 		et_rex.setEnabled(true);
+		et_target.setEnabled(true);
+
 		et_receive_from.setHint(R.string.et_receive_hint);
 		et_rex.setHint(R.string.et_rex_hint);
 
@@ -166,10 +167,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		et_receive_from.setEnabled(false);
 		et_target.setEnabled(false);
 		et_rex.setEnabled(false);
-
-		et_receive_from.clearFocus();
-		et_target.clearFocus();
-		et_rex.clearFocus();
 
 		et_receive_from.setHint(R.string.from_no_filter);
 		et_rex.setHint(R.string.rex_no_filter);
@@ -324,7 +321,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (v instanceof EditText) {
 			EditText et = (EditText) v;
-
+			
 			switch (v.getId()) {
 			case R.id.et_received_from:
 			case R.id.et_rexstring:
@@ -332,6 +329,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 				if (!Constant.started) {
 					if (hasFocus) {
 						et.setTextSize(18f);
+						et.setSelection(et.getText().toString().length());
 					} else {
 						et.setTextSize(12f);
 					}

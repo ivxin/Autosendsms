@@ -21,7 +21,8 @@
             android:id="@+id/et_rexstring"
             style="@style/input_style"
             android:layout_below="@id/et_received_from"
-            android:hint="@string/et_rex_hint" />
+            android:hint="@string/et_rex_hint"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/et_target_num"
