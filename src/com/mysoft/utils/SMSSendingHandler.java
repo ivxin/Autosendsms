@@ -1,5 +1,6 @@
 package com.mysoft.utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.mysoft.db.DBserver;
@@ -9,6 +10,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.telephony.SmsManager;
@@ -36,12 +41,12 @@ public class SMSSendingHandler {
 		numRex = sp.getString(Constant.NUM_REX_KEY, "").trim();
 		rex = sp.getString(Constant.REX_KEY, "").trim();
 		target = sp.getString(Constant.TARGET_KEY, "").trim();
-		if(!TextUtils.isEmpty(target)){
+		if (!TextUtils.isEmpty(target)) {
 			try {
-				target=target.substring(0, target.indexOf("("));
-				target=target.trim().replaceAll("\\s*", "");
+				target = target.substring(0, target.indexOf("("));
+				target = target.trim().replaceAll("\\s*", "");
 			} catch (Exception e) {
-				target=sp.getString(Constant.TARGET_KEY, "").trim();
+				target = sp.getString(Constant.TARGET_KEY, "").trim();
 			}
 		}
 		newSms.setTarget(target);
@@ -127,14 +132,33 @@ public class SMSSendingHandler {
 				if (smsSended) {
 					Toast.makeText(context, "转发来自:" + newSms.getAddress() + "的短信成功", Toast.LENGTH_SHORT).show();
 					smsSended = false;
+					soundAlert();
 				}
-				Intent intent=new Intent(Constant.ACTION);
+				Intent intent = new Intent(Constant.ACTION);
 				context.sendBroadcast(intent);
 				break;
 			default:
 				break;
 			}
 		}
+	}
+
+	private void soundAlert() {
+		final MediaPlayer player = new MediaPlayer();
+		try {
+			Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			player.setDataSource(context, alert);
+			player.prepare();
+			player.start();
+		} catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		player.setOnCompletionListener(new OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				player.release();
+			}
+		});
 	}
 
 }

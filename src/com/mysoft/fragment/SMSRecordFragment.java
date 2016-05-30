@@ -37,7 +37,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener;
 import tyrantgit.explosionfield.ExplosionField;
 
 @SuppressLint("InflateParams")
@@ -141,48 +140,42 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 				.setContentText("确认删除?删除后无法恢复!").setConfirmText("确定,删除吧!")
 				.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
 					@Override
-					public void onClick(SweetAlertDialog sDialog) {
+					public void onClick(final SweetAlertDialog sDialog) {
 						dbs.deleteSMSbyID(list.get(position));
-						sDialog.setCancelable(false);
-						sDialog.setTitleText("已删除!").setContentText("该记录已被删除!").setConfirmText("朕知道了")
-								.setConfirmClickListener(new OnSweetClickListener() {
+						sDialog.dismiss();
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								mExplosionField.explode(view, new AnimatorListener() {
 									@Override
-									public void onClick(SweetAlertDialog sweetAlertDialog) {
-										sweetAlertDialog.dismiss();
+									public void onAnimationStart(Animator animation) {
+
+									}
+
+									@Override
+									public void onAnimationRepeat(Animator animation) {
+									}
+
+									@Override
+									public void onAnimationEnd(Animator animation) {
 										new Handler().postDelayed(new Runnable() {
 											@Override
 											public void run() {
-												mExplosionField.explode(view, new AnimatorListener() {
-													@Override
-													public void onAnimationStart(Animator animation) {
-
-													}
-
-													@Override
-													public void onAnimationRepeat(Animator animation) {
-													}
-
-													@Override
-													public void onAnimationEnd(Animator animation) {
-														new Handler().postDelayed(new Runnable() {
-															@Override
-															public void run() {
-																view.setScaleX(1.0f);
-																view.setScaleY(1.0f);
-																view.setAlpha(1.0f);
-																refresh();
-															}
-														}, 200);
-													}
-
-													@Override
-													public void onAnimationCancel(Animator animation) {
-													}
-												});
+												view.setScaleX(1.0f);
+												view.setScaleY(1.0f);
+												view.setAlpha(1.0f);
+												refresh();
 											}
 										}, 100);
 									}
-								}).changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+
+									@Override
+									public void onAnimationCancel(Animator animation) {
+									}
+								});
+							}
+						}, 200);
+
 					}
 				}).show();
 		return true;
