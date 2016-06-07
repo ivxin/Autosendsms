@@ -9,11 +9,13 @@ import com.mysoft.utils.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @SuppressLint("InflateParams")
@@ -28,7 +30,7 @@ public class SMSAdapter extends BaseAdapter {
 		super();
 		face = StringUtils.getTypeface(context);
 		this.list = list;
-		this.context=context;
+		this.context = context;
 		inflater = LayoutInflater.from(context);
 	}
 
@@ -42,7 +44,7 @@ public class SMSAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public SMS getItem(int position) {
 		return list.get(position);
 	}
 
@@ -57,6 +59,7 @@ public class SMSAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_sms_layout, null);
 			holder = new ViewHolder();
+			holder.ll_item_sms=(LinearLayout) convertView.findViewById(R.id.ll_item_sms);
 			holder.tv_num_from = (TextView) convertView.findViewById(R.id.tv_num_from);
 			holder.tv_sms_time = (TextView) convertView.findViewById(R.id.tv_sms_time);
 			holder.tv_sms_content = (TextView) convertView.findViewById(R.id.tv_sms_content);
@@ -67,18 +70,21 @@ public class SMSAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+
 		SMS sms = list.get(position);
 		if (sms.isSended()) {
 			holder.tv_num_from.setText(sms.getAddress() + "-->" + sms.getTarget());
 		} else {
 			holder.tv_num_from.setText(sms.getAddress());
 		}
-		holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time()+""));
+		holder.ll_item_sms.setBackgroundColor(position % 2 > 0 ? Color.WHITE : Color.LTGRAY);
+		holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time() + ""));
 		holder.tv_sms_content.setText(sms.getContent());
 		return convertView;
 	}
 
 	class ViewHolder {
+		LinearLayout ll_item_sms;
 		TextView tv_num_from, tv_sms_time, tv_sms_content;
 	}
 

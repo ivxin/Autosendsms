@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_sms"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="1dp"
@@ -25,6 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:singleLine="true"
+            android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -34,6 +36,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="5dp"
         android:maxLines="2"
+        android:textColor="@android:color/darker_gray"
         android:textSize="12sp" />
 
 </LinearLayout>

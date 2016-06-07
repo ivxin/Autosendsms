@@ -31,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity implements OnClickListener, OnFocusChangeListener, OnPageChangeListener {
@@ -40,8 +41,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private EditText et_receive_from;
 	private EditText et_rex;
 	private EditText et_target;
-	private View btn_stop;
-	private View btn_start;
+	private TextView btn_stop;
+	private TextView btn_start;
 	private RelativeLayout rl_records;
 	private RelativeLayout rl_rexs;
 	// private LinearLayout ll_btns;
@@ -121,8 +122,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		rl_records = (RelativeLayout) findViewById(R.id.rl_records);
 		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
-		btn_stop = findViewById(R.id.btn_stop);
-		btn_start = findViewById(R.id.btn_start);
+		btn_stop = (TextView) findViewById(R.id.btn_stop);
+		btn_start = (TextView) findViewById(R.id.btn_start);
 
 		et_receive_from.setTypeface(face);
 		et_target.setTypeface(face);
@@ -159,7 +160,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setEnabled(true);
 		btn_stop.setEnabled(false);
-
+		btn_start.setTextColor(Color.BLACK);
+		btn_stop.setTextColor(Color.DKGRAY);
 		rl_rexs.setVisibility(View.VISIBLE);
 	}
 
@@ -177,7 +179,9 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		btn_start.setEnabled(false);
 		btn_stop.setEnabled(true);
-
+		btn_start.setTextColor(Color.DKGRAY);
+		btn_stop.setTextColor(Color.BLACK);
+		
 		rl_rexs.setVisibility(View.GONE);
 	}
 
@@ -372,13 +376,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			if (offset != 0) {
 				fgAll.setSlidingAlpha(1 - offset);
 				fgTransed.setSlidingAlpha(offset);
-				rl_records.setAlpha((float) (2 * Math.abs(offset - 0.5)));
+//				rl_records.setAlpha((float) (2 * Math.abs(offset - 0.5)));
 				if (offset > 0.5) {
 					rl_records.setBackgroundColor(fgTransed.getColor());
 				} else if (offset < 0.5) {
 					rl_records.setBackgroundColor(fgAll.getColor());
 				} else {
-					rl_records.setBackgroundColor(Color.TRANSPARENT);
+//					rl_records.setBackgroundColor(Color.TRANSPARENT);
 				}
 			}
 			// 滑动结束

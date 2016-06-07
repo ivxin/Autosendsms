@@ -35,9 +35,9 @@
             android:id="@+id/v_contact_chooser"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_below="@id/et_rexstring"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_below="@id/et_rexstring"
             android:background="@drawable/contacts_128px" />
     </RelativeLayout>
 
@@ -72,7 +72,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/blue_button_background"
                 android:gravity="center"
-                android:text="@string/btn_stop" />
+                android:text="@string/btn_stop"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/btn_start"
@@ -87,7 +88,8 @@
                 android:background="@drawable/blue_button_background"
                 android:enabled="false"
                 android:gravity="center"
-                android:text="@string/btn_start" />
+                android:text="@string/btn_start"
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </RelativeLayout>
 
