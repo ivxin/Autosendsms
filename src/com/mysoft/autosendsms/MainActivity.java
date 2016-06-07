@@ -376,13 +376,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			if (offset != 0) {
 				fgAll.setSlidingAlpha(1 - offset);
 				fgTransed.setSlidingAlpha(offset);
-//				rl_records.setAlpha((float) (2 * Math.abs(offset - 0.5)));
+				rl_records.setAlpha((float) (2 * Math.abs(offset - 0.5)));
 				if (offset > 0.5) {
 					rl_records.setBackgroundColor(fgTransed.getColor());
 				} else if (offset < 0.5) {
 					rl_records.setBackgroundColor(fgAll.getColor());
 				} else {
-//					rl_records.setBackgroundColor(Color.TRANSPARENT);
+					rl_records.setBackgroundColor(Color.TRANSPARENT);
 				}
 			}
 			// 滑动结束
