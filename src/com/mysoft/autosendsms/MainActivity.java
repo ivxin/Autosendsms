@@ -9,6 +9,7 @@ import com.mysoft.utils.Constant;
 import com.mysoft.view.MyViewPager;
 
 import android.Manifest;
+import android.animation.ArgbEvaluator;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -181,7 +182,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		btn_stop.setEnabled(true);
 		btn_start.setTextColor(Color.DKGRAY);
 		btn_stop.setTextColor(Color.BLACK);
-		
+
 		rl_rexs.setVisibility(View.GONE);
 	}
 
@@ -325,7 +326,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	public void onFocusChange(View v, boolean hasFocus) {
 		if (v instanceof EditText) {
 			EditText et = (EditText) v;
-			
+
 			switch (v.getId()) {
 			case R.id.et_received_from:
 			case R.id.et_rexstring:
@@ -370,28 +371,36 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	 */
 	@Override
 	public void onPageScrolled(int position, float offset, int offsetPixels) {
+		ArgbEvaluator evaluator = new ArgbEvaluator();
+		int evaluateAB = (Integer) evaluator.evaluate(offset, fgAll.getColor(), fgTransed.getColor());
+		int evaluateBA = (Integer) evaluator.evaluate(offset, fgTransed.getColor(), fgAll.getColor());
 		// 在0和1之间滑动
 		if (position <= 1) {
-			// 滑动过程中
-			if (offset != 0) {
-				fgAll.setSlidingAlpha(1 - offset);
-				fgTransed.setSlidingAlpha(offset);
-				rl_records.setAlpha((float) (2 * Math.abs(offset - 0.5)));
-				if (offset > 0.5) {
-					rl_records.setBackgroundColor(fgTransed.getColor());
-				} else if (offset < 0.5) {
-					rl_records.setBackgroundColor(fgAll.getColor());
-				} else {
-					rl_records.setBackgroundColor(Color.TRANSPARENT);
+			if (offset != 0) {// 滑动过程中
+				switch (position) {
+				case 0://从0出发
+					rl_records.setBackgroundColor(evaluateAB);
+					fgAll.setColor(evaluateAB);
+					fgTransed.setColor(evaluateAB);
+					break;
+				case 1://从1出发
+					rl_records.setBackgroundColor(evaluateBA);
+					fgAll.setColor(evaluateBA);
+					fgTransed.setColor(evaluateBA);
+					break;
 				}
-			}
-			// 滑动结束
-			if (position == 1 && offset == 0) {// 结束停在1
-				fgTransed.setSlidingAlpha(1);
-				rl_records.setBackgroundColor(fgTransed.getColor());
-			} else if (position == 0 && offset == 0) {// 结束停在0
-				fgAll.setSlidingAlpha(1);
-				rl_records.setBackgroundColor(fgAll.getColor());
+
+			} else {// 滑动结束
+				switch (position) {
+				case 0:// 结束停在0
+					rl_records.setBackgroundColor(fgAll.getColor());
+					fgAll.setColor(fgAll.getColor());
+					break;
+				case 1:// 结束停在1
+					rl_records.setBackgroundColor(fgTransed.getColor());
+					fgTransed.setColor(fgTransed.getColor());
+					break;
+				}
 			}
 		}
 

@@ -102,6 +102,11 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		return color;
 	}
 
+	public void setColor(int color) {
+		if (view != null)
+			view.setBackgroundColor(color);
+	}
+
 	private void getRandomColor() {
 		Random random = new Random();
 		int red = random.nextInt(128 + 50) + 128 - 50;
