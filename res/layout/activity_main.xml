@@ -8,12 +8,13 @@
     <RelativeLayout
         android:id="@+id/rl_rexs"
         android:layout_width="match_parent"
-        android:layout_height="130dp" >
+        android:layout_height="110dp" >
 
         <EditText
             android:id="@+id/et_received_from"
             style="@style/input_style"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="35dp"
             android:hint="@string/et_receive_hint"
             android:inputType="number|text" />
 
@@ -28,6 +29,7 @@
             android:id="@+id/et_target_num"
             style="@style/input_style"
             android:layout_below="@id/et_rexstring"
+            android:layout_marginRight="35dp"
             android:hint="@string/et_target_hint"
             android:inputType="number|phone" />
 
@@ -35,10 +37,25 @@
             android:id="@+id/v_contact_chooser"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/et_rexstring"
             android:background="@drawable/contacts_128px" />
+
+        <TextView
+            android:id="@+id/tv_text_divider"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/blue_button_background"
+            android:gravity="center"
+            android:text=";"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <RelativeLayout

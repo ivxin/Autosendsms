@@ -7,6 +7,7 @@ import com.mysoft.animation.CubeTransformer;
 import com.mysoft.fragment.SMSRecordFragment;
 import com.mysoft.utils.Constant;
 import com.mysoft.view.MyViewPager;
+import com.mysoft.view.SelectDialog;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;
@@ -30,6 +31,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,7 +59,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private SMSRecordFragment fgTransed;
 	private int page = 0;
 	private boolean hasPermission = false;
-
+	private ArrayList<String> contactorPhoneNumbers = new ArrayList<>();
+	private String username = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -133,6 +137,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		viewPager = (MyViewPager) findViewById(R.id.viewPager);
 		findViewById(R.id.view_up).setOnClickListener(this);
 		findViewById(R.id.v_contact_chooser).setOnClickListener(this);
+		findViewById(R.id.tv_text_divider).setOnClickListener(this);
 	}
 
 	public void saveDataToSP() {
@@ -223,6 +228,17 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		case R.id.v_contact_chooser:
 			startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), CONTACTOR);
 			break;
+		case R.id.tv_text_divider:
+			View view = getCurrentFocus();
+			if (view instanceof EditText) {
+				EditText et = (EditText) view;
+				String text = et.getText().toString();
+				if (!TextUtils.isEmpty(text) && !text.endsWith(";")) {
+					et.setText(text + ";");
+					et.setSelection(et.getText().toString().length());
+				}
+			}
+			break;
 		default:
 			break;
 		}
@@ -252,22 +268,46 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			switch (requestCode) {
 			case CONTACTOR:
 				if (hasPermission) {
-					String username = "";
-					String usernumber = "";
+					contactorPhoneNumbers.clear();
+					
 					ContentResolver reContentResolverol = getContentResolver();
 					Uri contactData = data.getData();
 					@SuppressWarnings("deprecation")
 					Cursor cursor = managedQuery(contactData, null, null, null, null);
 					cursor.moveToFirst();
-					username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-					String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-					Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-							ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
-					while (phone.moveToNext()) {
-						usernumber = phone
-								.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					int phoneCount = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+					if (phoneCount > 0) {
+						username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+						String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+						Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+								null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null,
+								null);
+						if (phone.moveToNext()) {
+							do {
+								String phoneNumber = phone
+										.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+								contactorPhoneNumbers.add(phoneNumber);
+							} while (phone.moveToNext());
+						}
+
+						if (contactorPhoneNumbers.size() == 1) {
+							et_target.setText(contactorPhoneNumbers.get(0) + " (" + username + ")");
+						} else {
+							final SelectDialog dialog=new SelectDialog(this);
+							dialog.setOnItemClickListener(new OnItemClickListener() {
+
+								@Override
+								public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+									et_target.setText(contactorPhoneNumbers.get((int)arg3) + " (" + username + ")");
+									dialog.dismiss();
+								}
+							});
+							dialog.setData(contactorPhoneNumbers);
+							dialog.show();
+						}
+					}else{
+						shortToast("联系人没有号码");
 					}
-					et_target.setText(usernumber + " (" + username + ")");
 				}
 				break;
 			default:
@@ -281,6 +321,18 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		String from = et_receive_from.getText().toString().trim();
 		String keyword = et_rex.getText().toString().trim();
 		String target = et_target.getText().toString().trim();
+		if (from.endsWith(";")) {
+			from = from.substring(0, from.length() - 1);
+			et_receive_from.setText(from);
+		}
+		if (keyword.endsWith(";")) {
+			keyword = keyword.substring(0, keyword.length() - 1);
+			et_rex.setText(keyword);
+		}
+		if (target.endsWith(";")) {
+			target = target.substring(0, target.length() - 1);
+			et_target.setText(target);
+		}
 		if (TextUtils.isEmpty(from)) {
 			from = "所有";
 		} else {
@@ -371,19 +423,23 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	 */
 	@Override
 	public void onPageScrolled(int position, float offset, int offsetPixels) {
+		int colorA = fgAll.getColor();
+		int colorB = fgTransed.getColor();
 		ArgbEvaluator evaluator = new ArgbEvaluator();
-		int evaluateAB = (Integer) evaluator.evaluate(offset, fgAll.getColor(), fgTransed.getColor());
-		int evaluateBA = (Integer) evaluator.evaluate(offset, fgTransed.getColor(), fgAll.getColor());
+		int evaluateAB = (Integer) evaluator.evaluate(offset, colorA, colorB);
+		int evaluateBA = (Integer) evaluator.evaluate(offset, colorB, colorA);
 		// 在0和1之间滑动
 		if (position <= 1) {
 			if (offset != 0) {// 滑动过程中
 				switch (position) {
-				case 0://从0出发
+				case 0:// 从0出发
+					rl_rexs.setBackgroundColor(evaluateAB);
 					rl_records.setBackgroundColor(evaluateAB);
 					fgAll.setColor(evaluateAB);
 					fgTransed.setColor(evaluateAB);
 					break;
-				case 1://从1出发
+				case 1:// 从1出发
+					rl_rexs.setBackgroundColor(evaluateBA);
 					rl_records.setBackgroundColor(evaluateBA);
 					fgAll.setColor(evaluateBA);
 					fgTransed.setColor(evaluateBA);
@@ -393,12 +449,14 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			} else {// 滑动结束
 				switch (position) {
 				case 0:// 结束停在0
-					rl_records.setBackgroundColor(fgAll.getColor());
-					fgAll.setColor(fgAll.getColor());
+					rl_rexs.setBackgroundColor(colorA);
+					rl_records.setBackgroundColor(colorA);
+					fgAll.setColor(colorA);
 					break;
 				case 1:// 结束停在1
-					rl_records.setBackgroundColor(fgTransed.getColor());
-					fgTransed.setColor(fgTransed.getColor());
+					rl_rexs.setBackgroundColor(colorB);
+					rl_records.setBackgroundColor(colorB);
+					fgTransed.setColor(colorB);
 					break;
 				}
 			}

@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -119,7 +118,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 	public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 		final View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_sms_detail, null);
 		SMS sms = list.get(position);
-		final LinearLayout ll_detail = (LinearLayout) v.findViewById(R.id.ll_detail);
+//		final LinearLayout ll_detail = (LinearLayout) v.findViewById(R.id.ll_detail);
 		final TextView tv_sms_sender_detail = (TextView) v.findViewById(R.id.tv_sms_sender_detail);
 		final TextView tv_sms_time_detail = (TextView) v.findViewById(R.id.tv_sms_time_detail);
 		final TextView tv_sms_content_detail = (TextView) v.findViewById(R.id.tv_sms_content_detail);
