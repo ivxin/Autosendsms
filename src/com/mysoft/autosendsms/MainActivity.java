@@ -303,6 +303,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 								}
 							});
 							dialog.setData(contactorPhoneNumbers);
+							dialog.setTitle("选择号码:"+username);
 							dialog.show();
 						}
 					}else{

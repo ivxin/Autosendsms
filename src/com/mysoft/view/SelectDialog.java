@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,8 +31,7 @@ public class SelectDialog extends Dialog {
 	private void initView(Context context) {
 		this.context = context;
 		lv_phone_numbers = new ListView(context);
-		lv_phone_numbers.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		setContentView(lv_phone_numbers);
+		setContentView(lv_phone_numbers, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 	}
 
 	public void setOnItemClickListener(OnItemClickListener listener) {
@@ -39,8 +39,7 @@ public class SelectDialog extends Dialog {
 	}
 
 	public void setData(List<String> data) {
-		lv_phone_numbers
-				.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, data));
+		lv_phone_numbers.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, data));
 	}
 
 }
