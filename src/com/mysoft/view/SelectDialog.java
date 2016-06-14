@@ -43,8 +43,8 @@ public class SelectDialog extends Dialog {
 		setContentView(view);
 	}
 
-	public void setData(Contactor contactor) {
-		tv_name.setText("选择号码:"+contactor.getName());
+	public SelectDialog setData(Contactor contactor) {
+		tv_name.setText("选择号码:" + contactor.getName());
 		ll_numbers.removeAllViews();
 		for (String number : contactor.getNumberList()) {
 			TextView tv_number = new TextView(context);
@@ -58,6 +58,7 @@ public class SelectDialog extends Dialog {
 			tv_number.setOnClickListener(new MyOnClickListener());
 			ll_numbers.addView(tv_number, layoutParams);
 		}
+		return this;
 	}
 
 	public interface OnNumberClickListener {
@@ -65,10 +66,6 @@ public class SelectDialog extends Dialog {
 	}
 
 	private OnNumberClickListener onNumberClickListener;
-
-	public OnNumberClickListener getOnNumberClickListener() {
-		return onNumberClickListener;
-	}
 
 	public void setOnNumberClickListener(OnNumberClickListener onNumberClickListener) {
 		this.onNumberClickListener = onNumberClickListener;

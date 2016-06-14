@@ -307,9 +307,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 									dialog.dismiss();
 								}
 							});
-							dialog.setData(contactor);
-//							dialog.setTitle("选择号码:" + username);
-							dialog.show();
+							dialog.setData(contactor).show();
 						}
 					} else {
 						shortToast("联系人没有号码");
