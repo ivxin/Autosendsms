@@ -2,10 +2,12 @@ package com.mysoft.view;
 
 import com.mysoft.autosendsms.R;
 import com.mysoft.entity.Contactor;
+import com.mysoft.utils.StringUtils;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ public class SelectDialog extends Dialog {
 	private TextView tv_name;
 	private LinearLayout ll_numbers;
 	private LinearLayout.LayoutParams layoutParams;
+	private Typeface tf;
 
 	public SelectDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
 		super(context, cancelable, cancelListener);
@@ -34,12 +37,14 @@ public class SelectDialog extends Dialog {
 
 	private void initView(Context context) {
 		this.context = context;
+		tf = StringUtils.getTypeface(context);
 		layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		layoutParams.bottomMargin = 20;
 		View view = View.inflate(context, R.layout.layout_select_dialog, null);
 		tv_name = (TextView) view.findViewById(R.id.tv_name);
 		ll_numbers = (LinearLayout) view.findViewById(R.id.ll_numbers);
+		tv_name.setTypeface(tf);
 		setContentView(view);
 	}
 
@@ -52,6 +57,7 @@ public class SelectDialog extends Dialog {
 			tv_number.setBackgroundResource(R.drawable.item_button_background);
 			tv_number.setTextSize(16f);
 			tv_number.setText(number);
+			tv_number.setTypeface(tf);
 			tv_number.setTag(contactor);
 			tv_number.setGravity(Gravity.CENTER);
 			tv_number.setPadding(0, 20, 0, 20);
