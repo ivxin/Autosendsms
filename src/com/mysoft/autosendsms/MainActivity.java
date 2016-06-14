@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import com.mysoft.adapter.MyPagerAdapter;
 import com.mysoft.animation.CubeTransformer;
+import com.mysoft.entity.Contactor;
 import com.mysoft.fragment.SMSRecordFragment;
 import com.mysoft.utils.Constant;
 import com.mysoft.view.MyViewPager;
 import com.mysoft.view.SelectDialog;
+import com.mysoft.view.SelectDialog.OnNumberClickListener;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;
@@ -60,7 +62,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private int page = 0;
 	private boolean hasPermission = false;
 	private ArrayList<String> contactorPhoneNumbers = new ArrayList<>();
-	private String username = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -269,7 +271,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			case CONTACTOR:
 				if (hasPermission) {
 					contactorPhoneNumbers.clear();
-					
+					String username="";
 					ContentResolver reContentResolverol = getContentResolver();
 					Uri contactData = data.getData();
 					@SuppressWarnings("deprecation")
@@ -293,20 +295,23 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 						if (contactorPhoneNumbers.size() == 1) {
 							et_target.setText(contactorPhoneNumbers.get(0) + " (" + username + ")");
 						} else {
-							final SelectDialog dialog=new SelectDialog(this);
-							dialog.setOnItemClickListener(new OnItemClickListener() {
-
+							Contactor contactor=new Contactor();
+							contactor.setName(username);
+							contactor.setNumberList(contactorPhoneNumbers);
+							final SelectDialog dialog = new SelectDialog(this,R.style.MyDialog);
+							dialog.setOnNumberClickListener(new OnNumberClickListener() {
+								
 								@Override
-								public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-									et_target.setText(contactorPhoneNumbers.get((int)arg3) + " (" + username + ")");
+								public void onNumberClick(String number, Contactor contactor) {
+									et_target.setText(number + " (" + contactor.getName() + ")");
 									dialog.dismiss();
 								}
 							});
-							dialog.setData(contactorPhoneNumbers);
-							dialog.setTitle("选择号码:"+username);
+							dialog.setData(contactor);
+//							dialog.setTitle("选择号码:" + username);
 							dialog.show();
 						}
-					}else{
+					} else {
 						shortToast("联系人没有号码");
 					}
 				}
