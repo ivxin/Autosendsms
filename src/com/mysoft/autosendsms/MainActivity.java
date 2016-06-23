@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
@@ -36,6 +37,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import net.simonvt.messagebar.MessageBar.OnMessageClickListener;
 
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity implements OnClickListener, OnFocusChangeListener, OnPageChangeListener {
@@ -353,12 +355,15 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	public void onBackPressed() {
 		if (System.currentTimeMillis() - lastPressed > 800) {
 			lastPressed = System.currentTimeMillis();
-			shortToast("再按一次退出");
 		} else {
 			if (Constant.started) {
-				longToast("服务已启动,后台自动转发");
+				toast("服务已启动,后台自动转发","退出", 5000, new OnMessageClickListener() {
+					@Override
+					public void onMessageClick(Parcelable token) {
+						MainActivity.super.onBackPressed();
+					}
+				});
 			}
-			super.onBackPressed();
 		}
 	}
 
