@@ -29,11 +29,7 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	protected void toast(String string, long duration) {
-		if (mb == null) {
-			mb = new MessageBar(this);
-		}
-		mb.setDuration(duration);
-		mb.show(string);
+		toast(string, null, duration, null);
 	}
 
 	protected void toast(String string,String btn_msg, long duration, OnMessageClickListener listener) {
@@ -42,7 +38,7 @@ public class BaseActivity extends FragmentActivity {
 		}
 		mb.setOnClickListener(listener);
 		mb.setDuration(duration);
-		mb.show(string, btn_msg, R.drawable.ic_messagebar_undo);
+		mb.show(string, btn_msg);
 	}
 
 	public void showTextDialog(String title, String text) {
