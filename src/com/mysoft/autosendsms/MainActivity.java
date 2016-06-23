@@ -131,11 +131,13 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = (TextView) findViewById(R.id.btn_stop);
 		btn_start = (TextView) findViewById(R.id.btn_start);
-
+		
 		et_receive_from.setTypeface(face);
 		et_target.setTypeface(face);
 		et_rex.setTypeface(face);
-
+		btn_stop.setTypeface(face);
+		btn_start.setTypeface(face);
+		
 		viewPager = (MyViewPager) findViewById(R.id.viewPager);
 		findViewById(R.id.view_up).setOnClickListener(this);
 		findViewById(R.id.v_contact_chooser).setOnClickListener(this);
