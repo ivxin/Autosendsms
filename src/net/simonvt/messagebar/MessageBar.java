@@ -5,15 +5,23 @@ import java.util.LinkedList;
 import com.mysoft.autosendsms.R;
 
 import android.app.Activity;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.TextView;
 
 public class MessageBar {
@@ -32,6 +40,9 @@ public class MessageBar {
 
 	private boolean immediately = false;
 
+//	private WindowManager mWindowManager;
+//	private WindowManager.LayoutParams wmParams;
+	private View barView;
 	private View mContainer;
 
 	private TextView mTextView;
@@ -53,9 +64,20 @@ public class MessageBar {
 	private AlphaAnimation mFadeOutAnimation;
 
 	public MessageBar(Activity activity) {
-		ViewGroup container = (ViewGroup) activity.findViewById(android.R.id.content);
-		View v = activity.getLayoutInflater().inflate(R.layout.mb__messagebar, container);
-		init(v);
+//		mWindowManager = (WindowManager) activity.getApplication().getSystemService(Context.WINDOW_SERVICE);
+//		wmParams = new WindowManager.LayoutParams();
+//		wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+//		wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//		wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+//		wmParams.gravity = Gravity.CENTER | Gravity.BOTTOM;
+//		wmParams.y = 100;
+//		wmParams.format = PixelFormat.TRANSLUCENT;
+//		wmParams.flags = WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+//				| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+		 ViewGroup container = (ViewGroup)
+		 activity.findViewById(android.R.id.content);
+		barView = activity.getLayoutInflater().inflate(R.layout.mb__messagebar, container);
+		init(barView);
 	}
 
 	public void setImmediately(boolean immediately) {
@@ -64,10 +86,6 @@ public class MessageBar {
 
 	public void setDuration(long duration) {
 		this.hide_delay = duration;
-	}
-
-	public MessageBar(View v) {
-		init(v);
 	}
 
 	private void init(View v) {
@@ -79,6 +97,21 @@ public class MessageBar {
 
 		mFadeInAnimation = new AlphaAnimation(0.0f, 1.0f);
 		mFadeOutAnimation = new AlphaAnimation(1.0f, 0.0f);
+		mFadeInAnimation.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+
+			}
+		});
 		mFadeOutAnimation.setDuration(ANIMATION_DURATION);
 		mFadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
 			@Override
@@ -95,6 +128,8 @@ public class MessageBar {
 					mCurrentMessage = null;
 					mContainer.setVisibility(View.GONE);
 					mShowing = false;
+//					barView.setVisibility(View.GONE);
+//					mWindowManager.removeView(barView);
 				}
 			}
 
@@ -132,7 +167,9 @@ public class MessageBar {
 	}
 
 	private void show(Message message, boolean immediately) {
+//		mWindowManager.addView(barView, wmParams);
 		mShowing = true;
+		barView.setVisibility(View.VISIBLE);
 		mContainer.setVisibility(View.VISIBLE);
 		mCurrentMessage = message;
 		mTextView.setText(message.mMessage);
@@ -170,6 +207,10 @@ public class MessageBar {
 
 	public void setOnClickListener(OnMessageClickListener listener) {
 		mClickListener = listener;
+	}
+	
+	public void hide(){
+		mHideRunnable.run();
 	}
 
 	public void clear() {

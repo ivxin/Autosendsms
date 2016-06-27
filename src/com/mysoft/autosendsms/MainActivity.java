@@ -37,6 +37,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import net.simonvt.messagebar.MessageBar;
 import net.simonvt.messagebar.MessageBar.OnMessageClickListener;
 
 @SuppressLint("NewApi")
@@ -54,7 +55,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	// private LinearLayout ll_btns;
 	private SharedPreferences sp;
 
-	private long lastPressed = 0;
 	private SMSSavedReceiver receiver = new SMSSavedReceiver();
 	private MyViewPager viewPager;
 	private SMSRecordFragment fgAll;
@@ -131,13 +131,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		// ll_btns = (LinearLayout) findViewById(R.id.ll_btns);
 		btn_stop = (TextView) findViewById(R.id.btn_stop);
 		btn_start = (TextView) findViewById(R.id.btn_start);
-		
+
 		et_receive_from.setTypeface(face);
 		et_target.setTypeface(face);
 		et_rex.setTypeface(face);
 		btn_stop.setTypeface(face);
 		btn_start.setTypeface(face);
-		
 		viewPager = (MyViewPager) findViewById(R.id.viewPager);
 		findViewById(R.id.view_up).setOnClickListener(this);
 		findViewById(R.id.v_contact_chooser).setOnClickListener(this);
@@ -273,7 +272,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			case CONTACTOR:
 				if (hasPermission) {
 					contactorPhoneNumbers.clear();
-					String username="";
+					String username = "";
 					ContentResolver reContentResolverol = getContentResolver();
 					Uri contactData = data.getData();
 					@SuppressWarnings("deprecation")
@@ -297,12 +296,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 						if (contactorPhoneNumbers.size() == 1) {
 							et_target.setText(contactorPhoneNumbers.get(0) + " (" + username + ")");
 						} else {
-							Contactor contactor=new Contactor();
+							Contactor contactor = new Contactor();
 							contactor.setName(username);
 							contactor.setNumberList(contactorPhoneNumbers);
-							final SelectDialog dialog = new SelectDialog(this,R.style.MyDialog);
+							final SelectDialog dialog = new SelectDialog(this, R.style.MyDialog);
 							dialog.setOnNumberClickListener(new OnNumberClickListener() {
-								
+
 								@Override
 								public void onNumberClick(String number, Contactor contactor) {
 									et_target.setText(number + " (" + contactor.getName() + ")");
@@ -355,18 +354,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 	@Override
 	public void onBackPressed() {
-		if (System.currentTimeMillis() - lastPressed > 800) {
-			lastPressed = System.currentTimeMillis();
-		} else {
-			if (Constant.started) {
-				toast("服务已启动,后台自动转发","退出", 5000, new OnMessageClickListener() {
-					@Override
-					public void onMessageClick(Parcelable token) {
-						MainActivity.super.onBackPressed();
-					}
-				});
+		toast(Constant.started ? "服务已启动,后台自动转发" : "服务已关闭", "退出", 5000, new OnMessageClickListener() {
+			@Override
+			public void onMessageClick(Parcelable token) {
+				MainActivity.super.onBackPressed();
 			}
-		}
+		});
 	}
 
 	@Override
