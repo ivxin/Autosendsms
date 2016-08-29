@@ -31,13 +31,16 @@ import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import net.simonvt.messagebar.MessageBar;
 import net.simonvt.messagebar.MessageBar.OnMessageClickListener;
 
 @SuppressLint("NewApi")
@@ -352,14 +355,20 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		return tip;
 	}
 
+	long lastPressed;
+
 	@Override
 	public void onBackPressed() {
-		toast(Constant.started ? "服务已启动,后台自动转发" : "服务已关闭", "退出", 5000, new OnMessageClickListener() {
-			@Override
-			public void onMessageClick(Parcelable token) {
-				MainActivity.super.onBackPressed();
-			}
-		});
+		if (System.currentTimeMillis() - lastPressed > 1500) {
+			lastPressed = System.currentTimeMillis();
+			toast(Constant.started ? "服务已启动,后台自动转发" : "服务已关闭", "退出", 5000, new OnMessageClickListener() {
+				@Override
+				public void onMessageClick(Parcelable token) {
+					MainActivity.super.onBackPressed();
+				}
+			});
+		} else
+			super.onBackPressed();
 	}
 
 	@Override

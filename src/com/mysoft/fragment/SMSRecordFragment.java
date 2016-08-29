@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.mysoft.autosendsms.MainActivity;
 import com.mysoft.autosendsms.R;
 import com.mysoft.db.DBserver;
@@ -17,11 +21,13 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,18 +39,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import tyrantgit.explosionfield.ExplosionField;
 
 @SuppressLint("InflateParams")
-public class SMSRecordFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
+public class SMSRecordFragment extends BaseFragment implements OnItemClickListener, OnItemLongClickListener {
 	public static final int ALL = 1;
 	public static final int TRANSED = 2;
 
 	private MainActivity context;
-	private ListView lv_sms_records;
+	private SwipeMenuListView lv_sms_records;
 	private TextView tv_fg_name;
 	private List<SMS> list;
 	private SMSAdapter adapter;
@@ -75,7 +81,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		dbs = new DBserver(context);
 		face = StringUtils.getTypeface(context);
 		view = inflater.inflate(R.layout.fragment_sms_list, null);
-		lv_sms_records = (ListView) view.findViewById(R.id.lv_sms_records);
+		lv_sms_records = (SwipeMenuListView) view.findViewById(R.id.lv_sms_records);
 		tv_fg_name = (TextView) view.findViewById(R.id.tv_fg_name);
 		tv_fg_name.setTypeface(face);
 		tv_fg_name.setText(flag == TRANSED ? "已经转发的短信" : "收到的所有短信");
@@ -91,6 +97,66 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		getRandomColor();
 		view.setBackgroundColor(color);
 		return view;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		// step 1. create a MenuCreator
+		SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+			@Override
+			public void create(SwipeMenu menu) {
+				// create "open" item
+				SwipeMenuItem openItem = new SwipeMenuItem(context);
+				// set item background
+				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+				// set item width
+				openItem.setWidth(dp2px(90));
+				// set item title
+				openItem.setTitle("Open");
+				// set item title fontsize
+				openItem.setTitleSize(18);
+				// set item title font color
+				openItem.setTitleColor(Color.WHITE);
+				// add to menu
+				menu.addMenuItem(openItem);
+
+				// create "delete" item
+				SwipeMenuItem deleteItem = new SwipeMenuItem(context);
+				// set item background
+				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+				// set item width
+				deleteItem.setWidth(dp2px(90));
+				// set a icon
+				deleteItem.setIcon(R.drawable.ic_delete);
+				// add to menu
+				menu.addMenuItem(deleteItem);
+			}
+		};
+
+		// set creator
+		lv_sms_records.setMenuCreator(creator);
+
+		// step 2. listener item click event
+		lv_sms_records.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+				SMS item = list.get(position);
+				switch (index) {
+				case 0:
+					// open
+					showSMSDetailDialog(item);
+					break;
+				case 1:
+					// delete
+					showDeleteSMSDialog(item);
+					
+					break;
+				}
+				return false;
+			}
+		});
+		super.onViewCreated(view, savedInstanceState);
 	}
 
 	public void setSlidingAlpha(float alpha) {
@@ -116,9 +182,21 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-		final View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_sms_detail, null);
 		SMS sms = list.get(position);
-//		final LinearLayout ll_detail = (LinearLayout) v.findViewById(R.id.ll_detail);
+		showSMSDetailDialog(sms);
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
+		SMS item = list.get(position);
+		showDeleteSMSDialog(item);
+		return true;
+	}
+
+	private void showSMSDetailDialog(final SMS sms) {
+		final View v = LayoutInflater.from(getContext()).inflate(R.layout.layout_sms_detail, null);
+		// final LinearLayout ll_detail = (LinearLayout)
+		// v.findViewById(R.id.ll_detail);
 		final TextView tv_sms_sender_detail = (TextView) v.findViewById(R.id.tv_sms_sender_detail);
 		final TextView tv_sms_time_detail = (TextView) v.findViewById(R.id.tv_sms_time_detail);
 		final TextView tv_sms_content_detail = (TextView) v.findViewById(R.id.tv_sms_content_detail);
@@ -138,14 +216,15 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		window.setContentView(v);
 	}
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
+	private void showDeleteSMSDialog(final SMS item) {
 		new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).setTitleText("删除这条记录?")
 				.setContentText("确认删除?删除后无法恢复!").setConfirmText("确定,删除吧!")
 				.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
 					@Override
 					public void onClick(final SweetAlertDialog sDialog) {
-						dbs.deleteSMSbyID(list.get(position));
+						dbs.deleteSMSbyID(item);
+						list.remove(item);
+						adapter.notifyDataSetChanged();
 						sDialog.dismiss();
 						new Handler().postDelayed(new Runnable() {
 							@Override
@@ -182,7 +261,6 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 					}
 				}).show();
-		return true;
 	}
 
 	public void startAnime() {
@@ -265,6 +343,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_sms_layout, null);
 				holder = new ViewHolder();
+				holder.ll_item_sms = (LinearLayout) convertView.findViewById(R.id.ll_item_sms);
 				holder.tv_num_from = (TextView) convertView.findViewById(R.id.tv_num_from);
 				holder.tv_sms_time = (TextView) convertView.findViewById(R.id.tv_sms_time);
 				holder.tv_sms_content = (TextView) convertView.findViewById(R.id.tv_sms_content);
@@ -281,6 +360,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 			} else {
 				holder.tv_num_from.setText(sms.getAddress());
 			}
+//			holder.ll_item_sms.setBackgroundColor(position % 2 > 0 ? Color.WHITE : Color.GRAY);
 			holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time() + ""));
 			holder.tv_sms_content.setText(sms.getContent());
 			SMSRecordFragment.this.context.setUpVis(position > 15);
@@ -288,6 +368,7 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 		}
 
 		class ViewHolder {
+			LinearLayout ll_item_sms;
 			TextView tv_num_from, tv_sms_time, tv_sms_content;
 		}
 
@@ -295,5 +376,9 @@ public class SMSRecordFragment extends Fragment implements OnItemClickListener, 
 
 	public void setTop() {
 		lv_sms_records.smoothScrollToPosition(0);
+	}
+
+	private int dp2px(int dp) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 }

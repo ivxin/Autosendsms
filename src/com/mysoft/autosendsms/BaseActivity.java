@@ -2,6 +2,8 @@ package com.mysoft.autosendsms;
 
 import com.mysoft.utils.StringUtils;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,18 @@ public class BaseActivity extends FragmentActivity {
 	private static final String STATE_MESSAGEBAR = "net.simonvt.messagebar";
 	private MessageBar mb;
 	public Typeface face;
+	
+	/**
+	 * 重写后使用 系统默认字体大小 防止被用户修改系统字体大小被影响到
+	 */
+	@Override  
+	public Resources getResources() {  
+	    Resources res = super.getResources();    
+	    Configuration config=new Configuration();    
+	    config.setToDefaults();    
+	    res.updateConfiguration(config,res.getDisplayMetrics() );  
+	    return res;  
+	}
 
 	@Override
 	protected void onCreate(Bundle arg0) {

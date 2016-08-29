@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mysoft.autosendsms.R;
 import com.mysoft.entity.SMS;
+import com.mysoft.fragment.SMSRecordFragment;
 import com.mysoft.utils.Constant;
 import com.mysoft.utils.StringUtils;
 

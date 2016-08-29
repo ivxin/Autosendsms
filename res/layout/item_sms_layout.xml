@@ -3,7 +3,10 @@
     android:id="@+id/ll_item_sms"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical"
     android:padding="5dp" >
 
