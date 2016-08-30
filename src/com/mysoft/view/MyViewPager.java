@@ -16,30 +16,30 @@ public class MyViewPager extends ViewPager {
 		super(context);
 	}
 
-	@Override
-	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-		if (v != this && v instanceof ViewPager) {
-			return true;
-		}
-		return super.canScroll(v, checkV, dx, x, y);
-	}
+//	@Override
+//	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+//		if (v != this && v instanceof ViewPager) {
+//			return true;
+//		}
+//		return super.canScroll(v, checkV, dx, x, y);
+//	}
 	
-    @Override  
-    public boolean dispatchTouchEvent(MotionEvent ev) {  
-            requestDisallowInterceptTouchEvent(true);  
-            return super.dispatchTouchEvent(ev);  
-    }  
-
-    @Override  
-    public boolean onInterceptTouchEvent(MotionEvent ev) {  
-            requestDisallowInterceptTouchEvent(true);  
-            return super.onInterceptTouchEvent(ev);  
-    }  
-
-    @Override  
-    public boolean onTouchEvent(MotionEvent event) {  
-            requestDisallowInterceptTouchEvent(true);  
-            return super.onTouchEvent(event);  
-    }  
+//    @Override  
+//    public boolean dispatchTouchEvent(MotionEvent ev) {  
+//            requestDisallowInterceptTouchEvent(true);  
+//            return super.dispatchTouchEvent(ev);  
+//    }  
+//
+//    @Override  
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {  
+//            requestDisallowInterceptTouchEvent(true);  
+//            return super.onInterceptTouchEvent(ev);  
+//    }  
+//
+//    @Override  
+//    public boolean onTouchEvent(MotionEvent event) {  
+//            requestDisallowInterceptTouchEvent(true);  
+//            return super.onTouchEvent(event);  
+//    }  
 
 }
