@@ -1,9 +1,18 @@
 package com.mysoft.autosendsms;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import com.mysoft.adapter.MyPagerAdapter;
+import com.mysoft.animation.AccordionTransformer;
 import com.mysoft.animation.CubeTransformer;
+import com.mysoft.animation.DefaultTransformer;
+import com.mysoft.animation.DepthPageTransformer;
+import com.mysoft.animation.InRightDownTransformer;
+import com.mysoft.animation.InRightUpTransformer;
+import com.mysoft.animation.RotateTransformer;
+import com.mysoft.animation.ZoomOutPageTransformer;
 import com.mysoft.entity.Contactor;
 import com.mysoft.fragment.SMSRecordFragment;
 import com.mysoft.utils.Constant;
@@ -30,11 +39,13 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.view.ViewPager.PageTransformer;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import net.simonvt.messagebar.MessageBar.OnMessageClickListener;
@@ -60,6 +71,8 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private SMSRecordFragment fgTransed;
 	private int page = 0;
 	private boolean hasPermission = false;
+	private boolean isPause = false;
+	private ArrayList<PageTransformer> transformers = new ArrayList<>();
 	private ArrayList<String> contactorPhoneNumbers = new ArrayList<>();
 
 	@Override
@@ -72,7 +85,24 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			hasPermission = true;
 		}
 		initView();
+		initTransformers();
 		initDataState();
+	}
+
+	private void initTransformers() {
+		transformers.add(new AccordionTransformer());
+		transformers.add(new CubeTransformer());
+		transformers.add(new DefaultTransformer());
+		transformers.add(new DefaultTransformer());
+		transformers.add(new InRightDownTransformer());
+		transformers.add(new InRightUpTransformer());
+		transformers.add(new RotateTransformer());
+		transformers.add(new ZoomOutPageTransformer());
+	}
+
+	private PageTransformer getRamdomTransformer() {
+		Collections.shuffle(transformers);
+		return transformers.get(0);
 	}
 
 	/**
@@ -105,7 +135,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 		MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager(), list);
 		viewPager.setAdapter(adapter);
-		viewPager.setPageTransformer(true, new CubeTransformer());
+		viewPager.setPageTransformer(true, getRamdomTransformer());
 		viewPager.setOnPageChangeListener(this);
 
 		et_receive_from.setOnFocusChangeListener(this);
@@ -377,7 +407,15 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 
 	@Override
 	protected void onResume() {
-		refresh();
+		if (isPause) {
+			finish();
+			isPause = false;
+			startActivity(new Intent(this, InitActivity.class));
+			overridePendingTransition(0, 0);
+		} else {
+			refresh();
+			viewPager.setPageTransformer(true, getRamdomTransformer());
+		}
 		super.onResume();
 	}
 
@@ -416,6 +454,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	protected void onStop() {
 		unregisterReceiver(receiver);
 		super.onStop();
+	}
+
+	@Override
+	protected void onPause() {
+		isPause = true;
+		super.onPause();
 	}
 
 	class SMSSavedReceiver extends BroadcastReceiver {
@@ -476,7 +520,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	 */
 	@Override
 	public void onPageScrollStateChanged(int state) {
-
 	}
 
 	@Override
@@ -494,6 +537,7 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		default:
 			break;
 		}
+
 	}
 
 	public void setUpVis(boolean vis) {

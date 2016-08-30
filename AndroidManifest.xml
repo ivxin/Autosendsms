@@ -23,15 +23,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:permission="android.permission.READ_CONTACTS"
-            android:windowSoftInputMode="stateHidden" >
+            android:name="com.mysoft.autosendsms.InitActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:permission="android.permission.READ_CONTACTS"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <receiver android:name="com.mysoft.receiver.SMSReceiver" >

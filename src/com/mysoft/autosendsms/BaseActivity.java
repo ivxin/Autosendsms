@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -18,23 +19,29 @@ public class BaseActivity extends FragmentActivity {
 	private static final String STATE_MESSAGEBAR = "net.simonvt.messagebar";
 	private MessageBar mb;
 	public Typeface face;
-	
+	private Handler handler;
+
 	/**
 	 * 重写后使用 系统默认字体大小 防止被用户修改系统字体大小被影响到
 	 */
-	@Override  
-	public Resources getResources() {  
-	    Resources res = super.getResources();    
-	    Configuration config=new Configuration();    
-	    config.setToDefaults();    
-	    res.updateConfiguration(config,res.getDisplayMetrics() );  
-	    return res;  
+	@Override
+	public Resources getResources() {
+		Resources res = super.getResources();
+		Configuration config = new Configuration();
+		config.setToDefaults();
+		res.updateConfiguration(config, res.getDisplayMetrics());
+		return res;
 	}
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		face = StringUtils.getTypeface(this);
 		super.onCreate(arg0);
+	}
+	
+	protected void onPostDelayed(Runnable run,long delayed){
+		if(handler==null)handler=new Handler();
+		handler.postDelayed(run, delayed);
 	}
 
 	protected void shortToast(String string) {
@@ -78,7 +85,7 @@ public class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onRestoreInstanceState(Bundle inState) {
 		super.onRestoreInstanceState(inState);
-		if (inState != null)
+		if (inState != null && mb != null && inState.getBundle(STATE_MESSAGEBAR) != null)
 			mb.onRestoreInstanceState(inState.getBundle(STATE_MESSAGEBAR));
 	}
 
