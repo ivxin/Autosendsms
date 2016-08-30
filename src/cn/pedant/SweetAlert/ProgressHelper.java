@@ -1,6 +1,6 @@
 package cn.pedant.SweetAlert;
 
-import com.mysoft.autosendsms.R;
+import com.ivxin.autosendsms.R;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import android.content.Context;

@@ -3,7 +3,7 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mysoft.autosendsms.MainActivity" >
+    tools:context="com.ivxin.autosendsms.MainActivity" >
 
     <RelativeLayout
         android:id="@+id/rl_rexs"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_rexs" >
 
-        <com.mysoft.view.MyViewPager
+        <com.ivxin.view.MyViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

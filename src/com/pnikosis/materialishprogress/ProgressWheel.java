@@ -1,6 +1,6 @@
 package com.pnikosis.materialishprogress;
 
-import com.mysoft.autosendsms.R;
+import com.ivxin.autosendsms.R;
 
 import android.annotation.TargetApi;
 import android.content.Context;

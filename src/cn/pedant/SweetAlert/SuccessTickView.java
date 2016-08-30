@@ -1,6 +1,6 @@
 package cn.pedant.SweetAlert;
 
-import com.mysoft.autosendsms.R;
+import com.ivxin.autosendsms.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

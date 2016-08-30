@@ -3,8 +3,8 @@ package cn.pedant.SweetAlert;
 
 import java.util.List;
 
-import com.mysoft.autosendsms.R;
-import com.mysoft.utils.StringUtils;
+import com.ivxin.autosendsms.R;
+import com.ivxin.utils.StringUtils;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import android.app.Dialog;

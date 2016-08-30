@@ -2,7 +2,7 @@ package net.simonvt.messagebar;
 
 import java.util.LinkedList;
 
-import com.mysoft.autosendsms.R;
+import com.ivxin.autosendsms.R;
 
 import android.app.Activity;
 import android.app.Service;

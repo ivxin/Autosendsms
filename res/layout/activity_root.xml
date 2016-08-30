@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.mysoft.view.TitleView
+    <com.ivxin.view.TitleView
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="50dp" >
-    </com.mysoft.view.TitleView>
+    </com.ivxin.view.TitleView>
 
     <FrameLayout
         android:id="@+id/fl_fragment_place"
