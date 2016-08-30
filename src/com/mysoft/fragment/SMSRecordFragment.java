@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.mysoft.autosendsms.MainActivity;
 import com.mysoft.autosendsms.R;
 import com.mysoft.db.DBserver;
@@ -15,18 +11,13 @@ import com.mysoft.entity.SMS;
 import com.mysoft.utils.Constant;
 import com.mysoft.utils.StringUtils;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import tyrantgit.explosionfield.ExplosionField;
@@ -50,7 +42,7 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 	public static final int TRANSED = 2;
 
 	private MainActivity context;
-	private SwipeMenuListView lv_sms_records;
+	private ListView lv_sms_records;
 	private TextView tv_fg_name;
 	private List<SMS> list;
 	private SMSAdapter adapter;
@@ -59,7 +51,7 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 	private int color;
 	private View view;
 	private Typeface face;
-	private ExplosionField mExplosionField;
+//	private ExplosionField mExplosionField;
 
 	public void setParams(MainActivity context, int flag) {
 		this.context = context;
@@ -77,11 +69,11 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		mExplosionField = ExplosionField.attach2Window(context);
+//		mExplosionField = ExplosionField.attach2Window(context);
 		dbs = new DBserver(context);
 		face = StringUtils.getTypeface(context);
 		view = inflater.inflate(R.layout.fragment_sms_list, null);
-		lv_sms_records = (SwipeMenuListView) view.findViewById(R.id.lv_sms_records);
+		lv_sms_records = (ListView) view.findViewById(R.id.lv_sms_records);
 		tv_fg_name = (TextView) view.findViewById(R.id.tv_fg_name);
 		tv_fg_name.setTypeface(face);
 		tv_fg_name.setText(flag == TRANSED ? "已经转发的短信" : "收到的所有短信");
@@ -99,65 +91,65 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 		return view;
 	}
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		// step 1. create a MenuCreator
-		SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-			@Override
-			public void create(SwipeMenu menu) {
-				// create "open" item
-				SwipeMenuItem openItem = new SwipeMenuItem(context);
-				// set item background
-				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
-				// set item width
-				openItem.setWidth(dp2px(90));
-				// set item title
-				openItem.setTitle("Open");
-				// set item title fontsize
-				openItem.setTitleSize(18);
-				// set item title font color
-				openItem.setTitleColor(Color.WHITE);
-				// add to menu
-				menu.addMenuItem(openItem);
-
-				// create "delete" item
-				SwipeMenuItem deleteItem = new SwipeMenuItem(context);
-				// set item background
-				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-				// set item width
-				deleteItem.setWidth(dp2px(90));
-				// set a icon
-				deleteItem.setIcon(R.drawable.ic_delete);
-				// add to menu
-				menu.addMenuItem(deleteItem);
-			}
-		};
-
-		// set creator
-		lv_sms_records.setMenuCreator(creator);
-
-		// step 2. listener item click event
-		lv_sms_records.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-				SMS item = list.get(position);
-				switch (index) {
-				case 0:
-					// open
-					showSMSDetailDialog(item);
-					break;
-				case 1:
-					// delete
-					showDeleteSMSDialog(item);
-					
-					break;
-				}
-				return false;
-			}
-		});
-		super.onViewCreated(view, savedInstanceState);
-	}
+//	@Override// XXX 跟ViewPager冲突,也不需要用
+//	public void onViewCreated(View view, Bundle savedInstanceState) {
+//		// step 1. create a MenuCreator
+//		SwipeMenuCreator creator = new SwipeMenuCreator() {
+//
+//			@Override
+//			public void create(SwipeMenu menu) {
+//				// create "open" item
+//				SwipeMenuItem openItem = new SwipeMenuItem(context);
+//				// set item background
+//				openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9, 0xCE)));
+//				// set item width
+//				openItem.setWidth(dp2px(90));
+//				// set item title
+//				openItem.setTitle("Open");
+//				// set item title fontsize
+//				openItem.setTitleSize(18);
+//				// set item title font color
+//				openItem.setTitleColor(Color.WHITE);
+//				// add to menu
+//				menu.addMenuItem(openItem);
+//
+//				// create "delete" item
+//				SwipeMenuItem deleteItem = new SwipeMenuItem(context);
+//				// set item background
+//				deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+//				// set item width
+//				deleteItem.setWidth(dp2px(90));
+//				// set a icon
+//				deleteItem.setIcon(R.drawable.ic_delete);
+//				// add to menu
+//				menu.addMenuItem(deleteItem);
+//			}
+//		};
+//
+//		// set creator
+//		lv_sms_records.setMenuCreator(creator);
+//
+//		// step 2. listener item click event
+//		lv_sms_records.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+//			@Override
+//			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+//				SMS item = list.get(position);
+//				switch (index) {
+//				case 0:
+//					// open
+//					showSMSDetailDialog(item);
+//					break;
+//				case 1:
+//					// delete
+//					showDeleteSMSDialog(item);
+//					
+//					break;
+//				}
+//				return false;
+//			}
+//		});
+//		super.onViewCreated(view, savedInstanceState);
+//	}
 
 	public void setSlidingAlpha(float alpha) {
 		view.setAlpha(alpha);
@@ -226,38 +218,38 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 						list.remove(item);
 						adapter.notifyDataSetChanged();
 						sDialog.dismiss();
-						new Handler().postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								mExplosionField.explode(view, new AnimatorListener() {
-									@Override
-									public void onAnimationStart(Animator animation) {
-
-									}
-
-									@Override
-									public void onAnimationRepeat(Animator animation) {
-									}
-
-									@Override
-									public void onAnimationEnd(Animator animation) {
-										new Handler().postDelayed(new Runnable() {
-											@Override
-											public void run() {
-												view.setScaleX(1.0f);
-												view.setScaleY(1.0f);
-												view.setAlpha(1.0f);
-												refresh();
-											}
-										}, 100);
-									}
-
-									@Override
-									public void onAnimationCancel(Animator animation) {
-									}
-								});
-							}
-						}, 200);
+//						new Handler().postDelayed(new Runnable() {//XXX 在ListView上用会错位,先不用了
+//							@Override
+//							public void run() {
+//								mExplosionField.explode(view, new AnimatorListener() {
+//									@Override
+//									public void onAnimationStart(Animator animation) {
+//
+//									}
+//
+//									@Override
+//									public void onAnimationRepeat(Animator animation) {
+//									}
+//
+//									@Override
+//									public void onAnimationEnd(Animator animation) {
+//										new Handler().postDelayed(new Runnable() {
+//											@Override
+//											public void run() {
+//												view.setScaleX(1.0f);
+//												view.setScaleY(1.0f);
+//												view.setAlpha(1.0f);
+//												refresh();
+//											}
+//										}, 100);
+//									}
+//
+//									@Override
+//									public void onAnimationCancel(Animator animation) {
+//									}
+//								});
+//							}
+//						}, 200);
 
 					}
 				}).show();

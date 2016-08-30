@@ -121,7 +121,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:alpha="0.8"
-        android:background="@drawable/navigation_up_button_32px"
+        android:background="@drawable/navigation_up_button_72px"
         android:visibility="gone" />
 
 </RelativeLayout>

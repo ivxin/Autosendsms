@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
+    <ListView
         android:id="@+id/lv_sms_records"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:background="@drawable/shape_corners_radius"
         android:padding="5dp" >
-    </com.baoyz.swipemenulistview.SwipeMenuListView>
+    </ListView>
 
     <TextView
         android:id="@+id/tv_fg_name"
