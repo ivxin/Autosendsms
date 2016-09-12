@@ -103,8 +103,11 @@ public class SMSSendingHandler {
 			SmsManager manager = SmsManager.getDefault();
 			String str = newSms.getContent() + "\n来自:" + newSms.getAddress() + "\n时间:"
 					+ StringUtils.getDateFomated(Constant.PATTERN, newSms.getDate_time() + "");
-			ArrayList<String> strs = manager.divideMessage(str);
-			manager.sendMultipartTextMessage(target, null, strs, null, null);
+			ArrayList<String> strs = manager.divideMessage(str);// 分割短信
+			manager.sendMultipartTextMessage(target, null, strs, null, null);// 分割发送
+			System.out.println(str);
+			System.out.println(target);
+			// manager.sendTextMessage(target, null, str, null, null);
 			smsSended = true;
 		} else {
 			smsSended = false;

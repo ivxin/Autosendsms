@@ -258,7 +258,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 			}
 			break;
 		case R.id.v_contact_chooser:
-			onContectorClicked = true;
 			startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), CONTACTOR);
 			break;
 		case R.id.tv_text_divider:
@@ -383,7 +382,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	}
 
 	long lastPressed;
-	private boolean onContectorClicked;
 
 	@Override
 	public void onBackPressed() {
@@ -406,20 +404,12 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 		}
 		super.onDestroy();
 	}
-
+	
 	@Override
-	protected void onResume() {
-		if (isPause && !onContectorClicked) {
-			finish();
-			isPause = false;
-			startActivity(new Intent(this, InitActivity.class));
-			overridePendingTransition(0, 0);
-		} else {
-			refresh();
-			viewPager.setPageTransformer(true, getRamdomTransformer());
-		}
-		onContectorClicked = false;
-		super.onResume();
+	protected void onPostResume() {
+		refresh();
+		viewPager.setPageTransformer(true, getRamdomTransformer());
+		super.onPostResume();
 	}
 
 	@Override

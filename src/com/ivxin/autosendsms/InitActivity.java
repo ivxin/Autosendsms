@@ -9,13 +9,9 @@ public class InitActivity extends BaseActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_init);
-		onPostDelayed(new Runnable() {
-			@Override
-			public void run() {
-				finish();
-				startActivity(new Intent(InitActivity.this,MainActivity.class));
-				overridePendingTransition(R.anim.modal_in, R.anim.modal_out);
-			}
-		}, 50);
+		finish();
+		startActivity(new Intent(InitActivity.this,MainActivity.class));
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+		
 	}
 }
