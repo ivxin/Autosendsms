@@ -1,14 +1,12 @@
 package com.ivxin.autosendsms;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import com.ivxin.adapter.MyPagerAdapter;
 import com.ivxin.animation.AccordionTransformer;
 import com.ivxin.animation.CubeTransformer;
 import com.ivxin.animation.DefaultTransformer;
-import com.ivxin.animation.DepthPageTransformer;
 import com.ivxin.animation.InRightDownTransformer;
 import com.ivxin.animation.InRightUpTransformer;
 import com.ivxin.animation.RotateTransformer;
@@ -45,7 +43,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import net.simonvt.messagebar.MessageBar.OnMessageClickListener;
@@ -71,7 +68,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	private SMSRecordFragment fgTransed;
 	private int page = 0;
 	private boolean hasPermission = false;
-	private boolean isPause = false;
 	private ArrayList<PageTransformer> transformers = new ArrayList<>();
 	private ArrayList<String> contactorPhoneNumbers = new ArrayList<>();
 
@@ -447,12 +443,6 @@ public class MainActivity extends BaseActivity implements OnClickListener, OnFoc
 	protected void onStop() {
 		unregisterReceiver(receiver);
 		super.onStop();
-	}
-
-	@Override
-	protected void onPause() {
-		isPause = true;
-		super.onPause();
 	}
 
 	class SMSSavedReceiver extends BroadcastReceiver {

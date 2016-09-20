@@ -22,10 +22,22 @@ public class StringUtils {
 	 * 毫秒转时间
 	 * 
 	 * @param millis
+	 *            long
 	 * @return
 	 */
 	public static String getDateFomated(String patten, String millis) {
-		return new SimpleDateFormat(patten, Locale.CHINESE).format(Long.parseLong(millis));
+		return getDateFomated(patten, Long.parseLong(millis));
+	}
+
+	/**
+	 * 毫秒转时间
+	 * 
+	 * @param millis
+	 *            long
+	 * @return
+	 */
+	public static String getDateFomated(String patten, long millis) {
+		return new SimpleDateFormat(patten, Locale.CHINESE).format(millis);
 	}
 
 	/**

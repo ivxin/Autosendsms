@@ -102,7 +102,7 @@ public class SMSSendingHandler {
 		if (numRexGood && rexGood && targetGood) {
 			SmsManager manager = SmsManager.getDefault();
 			String str = newSms.getContent() + "\n来自:" + newSms.getAddress() + "\n时间:"
-					+ StringUtils.getDateFomated(Constant.PATTERN, newSms.getDate_time() + "");
+					+ StringUtils.getDateFomated(Constant.PATTERN, newSms.getDate_time());
 			ArrayList<String> strs = manager.divideMessage(str);// 分割短信
 			manager.sendMultipartTextMessage(target, null, strs, null, null);// 分割发送
 			System.out.println(str);

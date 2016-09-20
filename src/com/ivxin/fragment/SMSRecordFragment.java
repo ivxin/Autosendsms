@@ -200,7 +200,7 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 		} else {
 			tv_sms_sender_detail.setText("来自:" + sms.getAddress());
 		}
-		tv_sms_time_detail.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time() + ""));
+		tv_sms_time_detail.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time()));
 		tv_sms_content_detail.setText(sms.getContent());
 		final AlertDialog dialog = new Builder(context).create();
 		dialog.show();
@@ -357,7 +357,7 @@ public class SMSRecordFragment extends BaseFragment implements OnItemClickListen
 			}
 			// holder.ll_item_sms.setBackgroundColor(position % 2 > 0 ?
 			// Color.WHITE : Color.GRAY);
-			holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time() + ""));
+			holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time()));
 			holder.tv_sms_content.setText(sms.getContent());
 			SMSRecordFragment.this.context.setUpVis(position > 15);
 			return convertView;

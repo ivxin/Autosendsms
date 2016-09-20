@@ -78,7 +78,7 @@ public class SMSAdapter extends BaseAdapter {
 			holder.tv_num_from.setText(sms.getAddress());
 		}
 		holder.ll_item_sms.setBackgroundColor(position % 2 > 0 ? Color.WHITE : Color.LTGRAY);
-		holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time() + ""));
+		holder.tv_sms_time.setText(StringUtils.getDateFomated(Constant.PATTERN, sms.getDate_time()));
 		holder.tv_sms_content.setText(sms.getContent());
 		return convertView;
 	}
